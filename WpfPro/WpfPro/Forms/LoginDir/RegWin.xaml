@@ -1,0 +1,38 @@
+﻿<Window x:Name="RegWinForm"
+         x:Class="WpfPro.Forms.LoginDir.RegWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfPro.Forms.LoginDir"
+        mc:Ignorable="d"
+        Title="注册"  Height="335" Width="420" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="19*"/>
+            <ColumnDefinition Width="273*"/>
+        </Grid.ColumnDefinitions>
+        <!--将控件按照行或列来顺序排列，但不会换行。通过设置面板的Orientation属性设置了两种排列方式-->
+        <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="17,10,0,0" Width="376">
+            <StackPanel.Background>
+                <ImageBrush/>
+            </StackPanel.Background>
+            <Label x:Name="Label" Content="淘客助手注册" HorizontalAlignment="Left" Height="33" Margin="95,15,0,10
+                   " Width="171" RenderTransformOrigin="0.503,5.212" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+            <TextBox x:Name="RUID" Height="30" TextWrapping="Wrap" Text="手机号" Margin="40,5,50,10" VerticalContentAlignment="Center" PreviewMouseDown="RUID_PreviewMouseDown" KeyDown="RUID_KeyDown" />
+            <TextBox x:Name="RUPASS" Height="30" TextWrapping="Wrap" Text="密码" Margin="40,5,50,10" VerticalContentAlignment="Center" PreviewMouseDown="RUPASS_PreviewMouseDown" KeyDown="RUPASS_KeyDown" />
+            <DockPanel Margin="0,0,0,0">
+                <TextBox x:Name="RVEFTCHATXT" Height="30" TextWrapping="Wrap" Text="验证码" Margin="40,5,10,10" VerticalContentAlignment="Center"  Width="155" PreviewMouseDown="RVEFTCHATXT_PreviewMouseDown"/>
+                <Button x:Name="RGETVEF" Content="获取验证码" Margin="10,5,50,10" Height="30" Background="#FFFF9800" Foreground="#FFECF0E5" TextOptions.TextHintingMode="Animated" BorderThickness="1" OpacityMask="Black" Click="RGETVEF_Click"  />
+            </DockPanel>
+            <Button x:Name="RREG_BUTT" Content="立即注册" Margin="40,5,50,10" Height="30" Background="#FFFF9800" Foreground="#FFECF0E5" TextOptions.TextHintingMode="Animated" BorderThickness="1" OpacityMask="Black"  Click="RREG_BUTT_Click"   />
+
+
+            <DockPanel Height="46" Margin="0,0,0,0">
+                <Label x:Name="label" BorderThickness="1" Content="已有账号 , " HorizontalAlignment="Left" Height="31" Margin="130,5,0,0" Width="69"/>
+                <Button x:Name="button2"  BorderThickness="1" Content="立即登陆" HorizontalAlignment="Left" Height="25" Margin="0,0,0,0" Width="53" Background="{x:Null}" BorderBrush="#00707070" Foreground="#FFFF9800" FontWeight="Bold"/>
+            </DockPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>
