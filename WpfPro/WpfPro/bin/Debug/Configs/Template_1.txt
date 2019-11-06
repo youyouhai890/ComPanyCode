@@ -1,0 +1,9 @@
+    {title}
+
+ ---------------------
+ ★原*价{zkPrice}元
+ ★劵*后价{afterCouponPrice}元
+ ★劵*面额{couponAmount}
+ ★卖*点{extendDesc}
+ ★二合一链接{tkl}
+ ★短链接{shortLink}
