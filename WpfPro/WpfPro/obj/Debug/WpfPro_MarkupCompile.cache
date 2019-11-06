@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\MyWorkspase\WPF_Project\WpfPro\WpfPro\obj\Debug\
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\
 WpfPro
 none
 false
 DEBUG;TRACE
-D:\MyWorkspase\WPF_Project\WpfPro\WpfPro\App.xaml
+D:\ComPanyCode\WpfPro\WpfPro\App.xaml
 61233680266
 25-477202246
-381630678551
-28196885856
+39-146693047
+281985608356
 Forms\FormControl\MessBoxCont.xaml;Forms\LoginDir\ForgetWin.xaml;Forms\LoginDir\LoginInputWin.xaml;Forms\LoginDir\RegWin.xaml;Forms\Products\TurnTolinkWin.xaml;Forms\Products\ProductsListWin.xaml;
 
 False

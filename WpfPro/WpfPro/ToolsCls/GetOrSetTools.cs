@@ -16,6 +16,7 @@ namespace WpfPro.ToolsCls
     //类型参数必须具有无参数的公共构造函数。当与其他约束一起使用时，new() 约束必须最后指定。
     class GetOrSetTools<T> where T : Window, new()
     {
+        private static readonly object GetSockObject = new object();
 
 
         //处理转链后的对象 , 第一个为替换的模版内容 ,  参数2替换的对象
@@ -225,6 +226,17 @@ namespace WpfPro.ToolsCls
             return Win;
         }
 
+        public static T GetItemParentWin(object mi)
+        {
+            lock (GetSockObject)
+            {
+                MenuItem CurrObj = mi as MenuItem;
+                Window targetWindow = Window.GetWindow(CurrObj); //通过控件找窗体
+                T Win = targetWindow as T;      //类型转换
+
+                return Win;
+            }
+        }
 
     }
 }

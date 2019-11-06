@@ -35,8 +35,6 @@ namespace WpfPro.Forms.Products
             //为指定的路由事件添加路由事件处理程序，并将该处理程序添加到当前元素的处理程序集合中。
             //将 handledEventsToo 指定为 true 时，可为已标记为由其他元素在事件路由过程中处理的路由事件调用所提供的处理程序。
 
-            
-
             //必须得是主线程才有值,并且必须在InitializeComponent后面
             sync = SynchronizationContext.Current;
 
@@ -102,35 +100,32 @@ namespace WpfPro.Forms.Products
 
         }
 
+        //鼠标任意键单击时只获取当前对象
+        private void PlistView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MouseAllClickEve(sender,e);
+        }
 
-
-        //双击商品列表里的某行时获取信息
+        //双击商品列表里的某行获取信息
         private void PlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            AllTrigEvent<ProductsListWin>.SelectContentAllClickEve(sender);
+            AllTrigEvent<ProductsListWin>.MouseAllClickEve(sender, e);
 
         }
 
 
-        //右键商品列表
-        private void PlistView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        //右键菜单里的标记已发按钮
+        private void FlagYiFa_Click(object sender, RoutedEventArgs e)
         {
-            //显示右键菜单
-            this.ContMenu.IsOpen = true;
-
+            // MessageBox.Show("标记已发");
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender,e);
         }
 
         //右键菜单里的添加根发按钮
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void AddGenFa_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("添加根发");
-        }
-
-        //右键菜单里的标记已发按钮
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("标记已发");
-
+            //MessageBox.Show("添加到跟发");
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
         }
     }
 }

@@ -128,8 +128,9 @@ namespace WpfPro.ManageAllCls
 
         }
 
-        public static void OpenOrCreatWin(string WinName)
+        public static void OpenOrCreatWin(object obj)
         {
+            string WinName = obj as string;
             T rw = ManWinCls<T>.GetWin(WinName);
             if (rw == null)
             {

@@ -146,6 +146,7 @@
     <Compile Include="HttpJsons\AllInterfaceCls.cs" />
     <Compile Include="HttpJsons\AccJsonObj\MLoginJson.cs" />
     <Compile Include="HttpJsons\SerializationTools.cs" />
+    <Compile Include="Local\LocalModel\GenFaMoel.cs" />
     <Compile Include="ManageAllCls\ManaEnumCls.cs" />
     <Compile Include="ManageAllCls\ManWinCls.cs" />
     <Compile Include="ManageAllCls\MyInfo.cs" />

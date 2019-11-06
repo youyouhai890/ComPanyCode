@@ -36,13 +36,13 @@
                         <Label x:Name="Plabel2" Content="每五分钟更新一次,可点击上面的按钮查看" HorizontalAlignment="Left" Height="26" Margin="324,89,0,0" VerticalAlignment="Top" Width="270" FontSize="11" Foreground="#FFFF9800" Visibility="Hidden"/>
                         <Label x:Name="Plabel3" Content="以下爆款来自全网实时监控适合手动挑选 , 软文不排除出现私人信息" Height="26" Canvas.Left="22" Canvas.Top="121" Width="786" FontSize="11"/>
                         <ListView x:Name="PlistView" Height="416"  VerticalAlignment="Top" IsSynchronizedWithCurrentItem="True" Canvas.Top="150" Width="1208" 
-                                   MouseDoubleClick="PlistView_MouseDoubleClick" PreviewMouseRightButtonDown="PlistView_PreviewMouseRightButtonDown"  >
+                                   MouseDoubleClick="PlistView_MouseDoubleClick"  PreviewMouseDown="PlistView_PreviewMouseDown"  >
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContextMenu>
                                         <ContextMenu Name="ContMenu" >
-                                            <MenuItem Header="添加跟发" Click="MenuItem_Click"/>
-                                            <MenuItem Header="标记已发" Click="MenuItem_Click_1"/>
+                                            <MenuItem Name="AddGenFa" Header="添加到跟发" Click="AddGenFa_Click"  />
+                                            <MenuItem Name="FlagYiFa" Header="标记已发" Click="FlagYiFa_Click" />
                                         </ContextMenu>
                                     </GridView.ColumnHeaderContextMenu>
                                     <!--<GridViewColumn Header="#" Width="50" DisplayMemberBinding="{Binding Path=JingHao}"/>-->
@@ -102,13 +102,13 @@
 
                                         </DockPanel>
                                     </StackPanel>
-                                    <ListView x:Name="listView" Height="295">
+                                    <ListView x:Name="AddListView" Height="295">
                                         <ListView.View>
                                             <GridView>
-                                                <GridViewColumn Header="#" Width="70"/>
-                                                <GridViewColumn Header="时间" Width="150"/>
-                                                <GridViewColumn Header="内容" Width="250"/>
-                                                <GridViewColumn Header="状态" Width="150"/>
+                                                <GridViewColumn Header="#" Width="70" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding time}"/>
+                                                <GridViewColumn Header="内容" Width="250" DisplayMemberBinding="{Binding title}"/>
+                                                <GridViewColumn Header="状态" Width="150" DisplayMemberBinding="{Binding state}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>

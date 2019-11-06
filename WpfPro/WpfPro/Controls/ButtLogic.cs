@@ -17,6 +17,7 @@ using WpfPro.Forms.LoginDir;
 using WpfPro.Forms.Products;
 using WpfPro.HttpJsons;
 using WpfPro.HttpJsons.JsonModel;
+using WpfPro.Local.LocalModel;
 using WpfPro.ManageAllCls;
 using WpfPro.TestCode;
 using WpfPro.ToolsCls;
@@ -54,12 +55,8 @@ namespace WpfPro.Controls
         {
 
             Button Butt = (Button)but;
-            Action action1 = () =>      //匿名方法
-            {
-                //创建或显示窗口
-                ManWinCls<RegWin>.OpenOrCreatWin("RegWinForm");
-            };
-            Butt.Dispatcher.BeginInvoke(action1);
+            //托管
+            ThreadCls<Button>.DelegateBIVKFun(Butt, ManWinCls<RegWin>.OpenOrCreatWin, "RegWinForm");
 
         }
 
@@ -414,7 +411,7 @@ namespace WpfPro.Controls
         public static void ListViewLogic(object sender)
         {
             ListView lv = sender as ListView;
-            ProdListModel emp = lv.SelectedItem as ProdListModel;
+            ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
 
             string uid = MyInfo.GetInstance.UID;
             if (emp != null && emp is ProdListModel)
@@ -442,12 +439,33 @@ namespace WpfPro.Controls
                 {
                     MessageBox.Show(model.message.Trim());
                 }
-
             }
-
-
-
         }
+
+
+        //单击鼠标左键或右键时获取当前信息
+        public static void GetCurrObjLogic(object sender, MouseButtonEventArgs e)
+        {
+            ListView lv = sender as ListView;
+            //获取当前控件的窗体
+            Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
+            ProductsListWin Win = targetWindow as ProductsListWin;		//窗体类型转换
+
+
+            ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
+            MyInfo.GetInstance.CurrPmObj = emp;     //保存当前对象
+
+
+            //屏蔽事件
+            if (e.ChangedButton == MouseButton.Right)   //如果是点击右键
+            {
+                Win.ContMenu.IsOpen = true;            //显示右键菜单
+            }
+            //MessageBox.Show(ProductsListWin.sync.ToString());
+             //MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title.ToString());
+        }
+
+
 
         //转链界面的功能
         public static void TurnToCopyLogic(ListView sender, ProdListModel obj, TurnDataModel tdm)
@@ -662,11 +680,9 @@ namespace WpfPro.Controls
                 //调用抽象接口 
                 AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao, ShowGoodsListSuccLogic,
                     "", "1011", "1", "2", "15", MyInfo.GetInstance.UID);
-           
         }
 
-       
-
+      
         //商品列表显示
         public static void ShowGoodsListSuccLogic(MLoginJson<ProdDataModel> model)
         {
@@ -682,6 +698,59 @@ namespace WpfPro.Controls
 
         }
 
+        //添加到跟发
+        public static void AddGenFaLogic(object obj)
+        {
+            MenuItem mi = obj as MenuItem;
+            ThreadCls<MenuItem>.ItemDelegateBIVKFun(mi, GenFaLogic); //托管UI
+        }
+
+        public static void GenFaLogic(object obj)
+        {
+            MenuItem mi = obj as MenuItem;
+            //获取指定控件的父窗体
+            Window targetWindow = Window.GetWindow(mi); //通过控件找窗体
+            ProductsListWin pw = targetWindow as ProductsListWin;      //类型转换
+
+            ProdListModel emp = MyInfo.GetInstance.CurrPmObj;   //获取选中对象
+            //MessageBox.Show("添加到跟发...");
+
+            //构造函数自动关联对象,存储全部跟发信息
+            GenFaMoel gfm = null;
+            gfm = new GenFaMoel(
+                        MyInfo.GetInstance.CurrId,
+                        emp.createTime,
+                        emp.title,
+                        "未发送"
+                         );
+            //MyInfo.GetInstance.GenfaList.Add(gfm);     //关联对象
+            MessageBox.Show(gfm.title);
+
+            //显示到listview里
+            pw.AddListView.Items.Add(new 
+            {
+                    id = gfm.id,
+                    time = gfm.time,
+                    title = gfm.title,
+                    state = gfm.state,
+             });
+            
+
+        }
+
+
+
+
+        //标记已发
+        public static void FlagYiFaLogic(object obj)
+        {
+            //获取当前控件的窗体
+            ProductsListWin pw = GetOrSetTools<ProductsListWin>.GetItemParentWin(obj);
+            //pw.AddGenFa = obj;
+            //ListView lv = sender as ListView;
+            //ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
+
+        }
 
     }
 }

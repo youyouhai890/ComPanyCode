@@ -168,10 +168,50 @@ namespace WpfPro.Controls
                 }
 
 
+
+                else
+                {
+                    MessageBox.Show("找不到匹配项....");
+                }
+
+
+
                 
 
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
 
+        }
+
+        #endregion
+
+
+ #region 处理所有列表里的子项按钮
+        public static void MenuItemAllClickEve(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MenuItem CurrObj = sender as MenuItem;
+
+                    if (CurrObj.Name.Trim() == "AddGenFa") //右键添加跟发
+                    {
+                        ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
+                         // ThreadCls<ProductsListWin>.SyncFun(ButtLogic<T>.AddGenFaLogic, CurrObj);
+                        //ButtLogic<T>.AddGenFaLogic(CurrObj);
+                    }
+                    else if (CurrObj.Name.Trim() == "FlagYiFa") //右键标记已发
+                    {
+                        ButtLogic<T>.FlagYiFaLogic(CurrObj);
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("找不到匹配项....");
+                    }
 
 
 
@@ -183,20 +223,30 @@ namespace WpfPro.Controls
             }
 
 
-
         }
 
-        #endregion
+#endregion
 
 
-        #region 所有单击listview内容的路由
-        public static void SelectContentAllClickEve(object sender)
+
+#region 处理所有鼠标路由
+        public static void MouseAllClickEve(object sender, MouseButtonEventArgs e)
         {
+            if (e.ClickCount == 2) //如果是双击
+            {
+                //双击商品列表里的某行
+                ButtLogic<T>.ListViewLogic(sender);    //显示双击信息
+            }
+            else
+            {
 
-            ButtLogic<T>.ListViewLogic(sender);    //实际处理的逻辑
+                ButtLogic<T>.GetCurrObjLogic(sender,e);    //鼠标任意键获取对象
+
+            }
+
         }
 
-        #endregion
+#endregion
 
 
 

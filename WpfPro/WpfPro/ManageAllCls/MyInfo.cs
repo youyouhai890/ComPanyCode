@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WpfPro.HttpJsons.JsonModel;
+using WpfPro.Local.LocalModel;
 
 namespace WpfPro.ManageAllCls
 {
     //多线程单例
     class MyInfo
     {
-
         private static MyInfo _instance = null;
         private static readonly object SynObject = new object();
 
@@ -21,12 +21,13 @@ namespace WpfPro.ManageAllCls
         private static List<ProdListModel> _prollistview;   //用于商品列表显示
         public bool GoodsFlg = false;      //商品列表的标志 , true时才能访问,因为加载列表时莫名的自动点击所以加了这个
 
-
+        private int _currid=1;
+        private ProdListModel _pmobj;       //当前点击的列表项对象
+        public List<GenFaMoel> GenfaList { set; get; }
 
         MyInfo()
         {
         }
-
 
 
         /// <summary>
@@ -50,6 +51,29 @@ namespace WpfPro.ManageAllCls
         }
 
 
+        public  int CurrId
+        {
+            set
+            {
+                _currid = value;
+            }
+            get
+            {
+                return _currid++;
+            }
+        }
+
+        public  ProdListModel CurrPmObj
+        {
+            set
+            {
+                _pmobj = value;
+            }
+            get
+            {
+                return  _pmobj;
+            }
+        }
 
 
         //用户id,登陆时获取
