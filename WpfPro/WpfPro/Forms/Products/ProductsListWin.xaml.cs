@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using WpfPro.Controls;
+using WpfPro.HttpJsons;
+using WpfPro.ManageAllCls;
+using WpfPro.TestCode;
+
+namespace WpfPro.Forms.Products
+{
+
+
+    public partial class ProductsListWin : Window
+    {
+        public static bool RightButt = false;
+        //异步更新,线程通信
+        public  static SynchronizationContext sync;
+        public ProductsListWin()
+        {
+
+            InitializeComponent();
+            //为指定的路由事件添加路由事件处理程序，并将该处理程序添加到当前元素的处理程序集合中。
+            //将 handledEventsToo 指定为 true 时，可为已标记为由其他元素在事件路由过程中处理的路由事件调用所提供的处理程序。
+
+            
+
+            //必须得是主线程才有值,并且必须在InitializeComponent后面
+            sync = SynchronizationContext.Current;
+
+            ManWinCls<ProductsListWin>.AddWin(this.Name, this);   //添加管理的窗口
+
+            //关闭当前窗口,在属性窗口那里貌似找不到这事件，但是可以手动注册
+            this.Closing += new ManWinCls<ProductsListWin>().WinClose;
+        }
+
+        //加载窗口时触发的函数
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //路由所有窗口加载的事件
+            AllTrigEvent<ProductsListWin>.LoadedWinEve(sender);
+        }
+        //确定按钮 , PID 设置(推广位)
+        private void Sbutton1_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
+
+
+        //软件设置 , 授权按按钮
+        private void Sbutton2_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
+        }
+
+        
+
+        private void Abutton2_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
+
+        private void Abutton4_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
+        }
+
+        private void Abutton3_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
+        }
+
+        private void Abutton5_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
+
+        //商品列表搜索
+        private void Pbutton_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
+
+        private void LButton1_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
+        }
+
+
+
+        //双击商品列表里的某行时获取信息
+        private void PlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.SelectContentAllClickEve(sender);
+
+        }
+
+
+        //右键商品列表
+        private void PlistView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //显示右键菜单
+            this.ContMenu.IsOpen = true;
+
+        }
+
+        //右键菜单里的添加根发按钮
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("添加跟发");
+        }
+
+        //右键菜单里的标记已发按钮
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("标记已发");
+
+        }
+    }
+}
