@@ -443,14 +443,13 @@ namespace WpfPro.Controls
         }
 
 
-        //单击鼠标左键或右键时获取当前信息
+        //爆款单击鼠标左键或右键时获取当前信息
         public static void GetCurrObjLogic(object sender, MouseButtonEventArgs e)
         {
             ListView lv = sender as ListView;
             //获取当前控件的窗体
             Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
-            ProductsListWin Win = targetWindow as ProductsListWin;		//窗体类型转换
-
+            ProductsListWin plw = targetWindow as ProductsListWin;		//窗体类型转换
 
             ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
             MyInfo.GetInstance.CurrPmObj = emp;     //保存当前对象
@@ -459,13 +458,36 @@ namespace WpfPro.Controls
             //屏蔽事件
             if (e.ChangedButton == MouseButton.Right)   //如果是点击右键
             {
-                Win.ContMenu.IsOpen = true;            //显示右键菜单
+                plw.BContMenu.IsOpen = true;            //显示右键菜单
             }
             //MessageBox.Show(ProductsListWin.sync.ToString());
              //MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title.ToString());
         }
 
 
+        //群发单击鼠标左键或右键时获取当前信息
+        public static void ShowRightMenuLogic(object sender, MouseButtonEventArgs e)
+        {
+            ListView lv = sender as ListView;
+            //获取当前控件的窗体
+            Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
+            ProductsListWin plw = targetWindow as ProductsListWin;		//窗体类型转换
+
+            GenFaMoel gfm = lv.SelectedItem as GenFaMoel;   //获取选中对象
+            MyInfo.GetInstance.CurrGfObj = gfm;     //保存当前对象
+
+
+            //屏蔽事件
+            if (e.ChangedButton == MouseButton.Right)   //如果是点击右键
+            {
+                plw.QContMenu.IsOpen = true;            //显示右键菜单
+            }
+            //MessageBox.Show(ProductsListWin.sync.ToString());
+            //MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title.ToString());
+        }
+
+
+        
 
         //转链界面的功能
         public static void TurnToCopyLogic(ListView sender, ProdListModel obj, TurnDataModel tdm)
@@ -707,13 +729,12 @@ namespace WpfPro.Controls
 
         public static void GenFaLogic(object obj)
         {
-            MenuItem mi = obj as MenuItem;
+
             //获取指定控件的父窗体
-            Window targetWindow = Window.GetWindow(mi); //通过控件找窗体
-            ProductsListWin pw = targetWindow as ProductsListWin;      //类型转换
+           // Window targetWindow = Window.GetWindow(gd); //通过控件找窗体
+            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm"); ;      //类型转换
 
             ProdListModel emp = MyInfo.GetInstance.CurrPmObj;   //获取选中对象
-            //MessageBox.Show("添加到跟发...");
 
             //构造函数自动关联对象,存储全部跟发信息
             GenFaMoel gfm = null;
@@ -723,8 +744,6 @@ namespace WpfPro.Controls
                         emp.title,
                         "未发送"
                          );
-            //MyInfo.GetInstance.GenfaList.Add(gfm);     //关联对象
-            MessageBox.Show(gfm.title);
 
             //显示到listview里
             pw.AddListView.Items.Add(new 
@@ -738,9 +757,6 @@ namespace WpfPro.Controls
 
         }
 
-
-
-
         //标记已发
         public static void FlagYiFaLogic(object obj)
         {
@@ -749,8 +765,35 @@ namespace WpfPro.Controls
             //pw.AddGenFa = obj;
             //ListView lv = sender as ListView;
             //ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
-
         }
+
+        //置顶
+        public static void ZhiDingLogic(object obj)
+        {
+            MessageBox.Show("置顶");
+        }
+
+        public static void ShangYiLogic(object obj)
+        {
+            MessageBox.Show("上移");
+        }       
+        public static void XiaYiFaLogic(object obj)
+        {
+            MessageBox.Show("下移");
+        }       
+        public static void ChaKanNeiRongFaLogic(object obj)
+        {
+            MessageBox.Show("查看内容");
+        }        
+        public static void ShanChuGenFaFaLogic(object obj)
+        {
+            MessageBox.Show("删除跟发");
+        }        
+        public static void FaSongNeiRongFaLogic(object obj)
+        {
+            MessageBox.Show("发送内容");
+        }      
+
 
     }
 }

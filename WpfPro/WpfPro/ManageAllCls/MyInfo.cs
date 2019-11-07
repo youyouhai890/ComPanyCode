@@ -22,8 +22,11 @@ namespace WpfPro.ManageAllCls
         public bool GoodsFlg = false;      //商品列表的标志 , true时才能访问,因为加载列表时莫名的自动点击所以加了这个
 
         private int _currid=1;
-        private ProdListModel _pmobj;       //当前点击的列表项对象
-        public List<GenFaMoel> GenfaList { set; get; }
+        private ProdListModel _pmobj;       //爆款当前点击的列表项对象
+        private GenFaMoel _gfobj;       //群发当前点击的列表项对象
+        public List<GenFaMoel> GenfaList = new List<GenFaMoel>();
+
+
 
         MyInfo()
         {
@@ -72,6 +75,18 @@ namespace WpfPro.ManageAllCls
             get
             {
                 return  _pmobj;
+            }
+        }
+
+        public GenFaMoel CurrGfObj
+        {
+            set
+            {
+                _gfobj = value;
+            }
+            get
+            {
+                return _gfobj;
             }
         }
 

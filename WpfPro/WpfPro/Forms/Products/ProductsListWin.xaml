@@ -17,7 +17,7 @@
             </ComboBox>
         </DockPanel>
         <TabControl x:Name="tabControl" Panel.ZIndex="1" IsSynchronizedWithCurrentItem="True" TabStripPlacement="Left" Background="White" Margin="0,25,0,0">
-            <TabItem Header="全网爆款分享" Name="TabItem1" Margin="-2,-2,2,-2" Height="40" FontSize="13" Width="100">
+            <TabItem Header="全网爆款分享" Name="BaoKuan" Margin="-2,-2,2,-2" Height="40" FontSize="13" Width="100">
                 <Grid Background="White" Margin="0,-2,-4,-1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="27*"/>
@@ -27,7 +27,7 @@
                         <Line X1="0" Y1="50" X2="1220" Y2="50" Stroke="#FFF6F6F6"  StrokeThickness="3" HorizontalAlignment="Left" Width="1218"/>
                         <Line X1="20" Y1="50" X2="110" Y2="50" Stroke="#FFFF9800"  StrokeThickness="3" HorizontalAlignment="Left"/>
                         <TextBox x:Name="PtextBox"  Text="" Height="28" Canvas.Left="22" TextWrapping="Wrap" Canvas.Top="60" Width="426" VerticalContentAlignment="Center"/>
-                        <Button x:Name="Pbutton" Content="搜索" Height="28" Canvas.Left="453" Canvas.Top="61" Width="175" Background="#FFFFF6E9" Click="Pbutton_Click"/>
+                        <Button x:Name="Pbutton" Content="搜索" Height="29" Canvas.Left="447" Canvas.Top="59" Width="175" Background="#FFFFF6E9" Click="Pbutton_Click"/>
                         <Button x:Name="P2button" Content="实时爆款单" Height="28" Canvas.Left="304" Canvas.Top="60" Width="118" Background="#FFFF9800" Foreground="White" Visibility="Hidden"/>
                         <Button x:Name="P3button" Content="全网淘客爆单网" Height="28" Canvas.Left="430" Canvas.Top="60" Width="118" Background="#FFFF9800" Foreground="White" Visibility="Hidden"/>
                         <Button x:Name="P4button" Content="列表" Height="28" Canvas.Left="650" Canvas.Top="60" Width="70" Background="#FFFF9800" Foreground="White" Visibility="Hidden"/>
@@ -40,7 +40,7 @@
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContextMenu>
-                                        <ContextMenu Name="ContMenu" >
+                                        <ContextMenu Name="BContMenu" >
                                             <MenuItem Name="AddGenFa" Header="添加到跟发" Click="AddGenFa_Click"  />
                                             <MenuItem Name="FlagYiFa" Header="标记已发" Click="FlagYiFa_Click" />
                                         </ContextMenu>
@@ -62,7 +62,7 @@
                     <Button x:Name="LButton1" Content="刷新" Margin="938,52,45,0" VerticalAlignment="Top" Height="35" Background="#FFFF9800" Foreground="White" Click="LButton1_Click" Grid.Column="1"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="群发助手" Margin="-2,2,2,-2" Height="40">
+            <TabItem  Header="群发助手" Name="QunFa" Margin="-2,2,2,-2" Height="40">
                 <Grid Background="White">
                     <Canvas>
                         <Label x:Name="QLabel1" Content="群发助手" Canvas.Left="23" Canvas.Top="10" Height="28" Width="76"/>
@@ -102,9 +102,19 @@
 
                                         </DockPanel>
                                     </StackPanel>
-                                    <ListView x:Name="AddListView" Height="295">
+                                    <ListView x:Name="AddListView" Height="295"  PreviewMouseDown="AddListView_PreviewMouseDown" >
                                         <ListView.View>
                                             <GridView>
+                                                <GridView.ColumnHeaderContextMenu>
+                                                    <ContextMenu Name="QContMenu">
+                                                        <MenuItem Header="置顶" Name="ZhiDing" Click="ZhiDing_Click" />
+                                                        <MenuItem Header="上移" Name="ShangYi" Click="ShangYi_Click" />
+                                                        <MenuItem Header="下移" Name="XiaYi" Click="XiaYi_Click" />
+                                                        <MenuItem Header="查看跟发内容(双击)" Name="ChaKanNeiRong" Click="ChaKanNeiRong_Click"/>
+                                                        <MenuItem Header="删除跟发内容" Name="ShanChuGenFa" Click="ShanChuGenFa_Click"/>
+                                                        <MenuItem Header="发送选择内容" Name="FaSongNeiRong" Click="FaSongNeiRong_Click"/>
+                                                    </ContextMenu>
+                                                </GridView.ColumnHeaderContextMenu>
                                                 <GridViewColumn Header="#" Width="70" DisplayMemberBinding="{Binding id}"/>
                                                 <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding time}"/>
                                                 <GridViewColumn Header="内容" Width="250" DisplayMemberBinding="{Binding title}"/>

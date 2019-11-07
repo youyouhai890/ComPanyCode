@@ -140,7 +140,6 @@ namespace WpfPro.Controls
                 else if (CurrObj.Name.Trim() == "Tbutton2") //转链界面的,添加到跟发按钮
                 {
                     ButtLogic<T>.AddToWithLinkLogic(CurrObj);
-
                 }
                 else if (CurrObj.Name.Trim() == "Abutton2") //默认模板1
                 {
@@ -173,9 +172,6 @@ namespace WpfPro.Controls
                 {
                     MessageBox.Show("找不到匹配项....");
                 }
-
-
-
                 
 
 
@@ -199,14 +195,41 @@ namespace WpfPro.Controls
 
                     if (CurrObj.Name.Trim() == "AddGenFa") //右键添加跟发
                     {
-                        ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
+                        //ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
                          // ThreadCls<ProductsListWin>.SyncFun(ButtLogic<T>.AddGenFaLogic, CurrObj);
-                        //ButtLogic<T>.AddGenFaLogic(CurrObj);
+                        ButtLogic<T>.AddGenFaLogic(CurrObj);
                     }
                     else if (CurrObj.Name.Trim() == "FlagYiFa") //右键标记已发
                     {
                         ButtLogic<T>.FlagYiFaLogic(CurrObj);
                     }
+                    else if (CurrObj.Name.Trim() == "ZhiDing") 
+                    {
+                        ButtLogic<T>.ZhiDingLogic(CurrObj);//置顶
+                     }
+                    else if (CurrObj.Name.Trim() == "ShangYi") //上移
+                    {
+                        ButtLogic<T>.ShangYiLogic(CurrObj);
+                    }
+                    else if (CurrObj.Name.Trim() == "XiaYi") //下移
+                    {
+                        ButtLogic<T>.XiaYiFaLogic(CurrObj);
+                    }
+                    else if (CurrObj.Name.Trim() == "ChaKanNeiRong") //查看内容
+                    {
+                        ButtLogic<T>.ChaKanNeiRongFaLogic(CurrObj);
+                    }
+                    else if (CurrObj.Name.Trim() == "ShanChuGenFa") //删除跟发
+                    {
+                        ButtLogic<T>.ShanChuGenFaFaLogic(CurrObj);
+                    }
+                    else if (CurrObj.Name.Trim() == "FaSongNeiRong") //发送内容
+                    {
+                        ButtLogic<T>.FaSongNeiRongFaLogic(CurrObj);
+                    }
+                
+                     
+
 
                     else
                     {
@@ -232,15 +255,21 @@ namespace WpfPro.Controls
 #region 处理所有鼠标路由
         public static void MouseAllClickEve(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2) //如果是双击
+            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");
+
+            if (e.ClickCount == 2 && pw.BaoKuan.IsSelected ) //如果是双击 , 在判断爆款页面有没有被选中
             {
                 //双击商品列表里的某行
                 ButtLogic<T>.ListViewLogic(sender);    //显示双击信息
             }
-            else
+            else if (pw.BaoKuan.IsSelected)      //判断爆款页面有没有被选中
             {
-
                 ButtLogic<T>.GetCurrObjLogic(sender,e);    //鼠标任意键获取对象
+
+            }
+            else if ( pw.QunFa.IsSelected)
+            {
+                ButtLogic<T>.ShowRightMenuLogic(sender, e);    //鼠标任意键获取对象
 
             }
 
@@ -305,9 +334,6 @@ namespace WpfPro.Controls
                 throw ex;
             }
         }
-
-
-
     }
 
 

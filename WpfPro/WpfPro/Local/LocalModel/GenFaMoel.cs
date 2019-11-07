@@ -22,14 +22,7 @@ namespace WpfPro.Local.LocalModel
             this.time = TIME;
             this.title = TITLE;
             this.state = STATE;
-            // MyInfo.GetInstance.GenfaList.Add(this);     //关联对象
-            //AddGenfa();
-        }
-
-        void  AddGenfa()
-        {
-             MyInfo.GetInstance.GenfaList.Add(this);     //关联对象
-
+             MyInfo.GetInstance.GenfaList.Add(this);     //自动关联对象
         }
 
     }

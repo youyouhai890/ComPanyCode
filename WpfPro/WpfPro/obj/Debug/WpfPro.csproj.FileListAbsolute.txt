@@ -88,9 +88,7 @@ D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\SQLite.Designer.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\System.Data.SQLite.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\System.Data.SQLite.Linq.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\EnvDTE.dll
-D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.VisualStudio.VSHelp.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\stdole.dll
-D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.MSXML.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Core.pdb
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Winforms.pdb
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csprojResolveAssemblyReference.cache

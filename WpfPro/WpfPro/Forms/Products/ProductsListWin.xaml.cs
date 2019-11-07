@@ -100,20 +100,24 @@ namespace WpfPro.Forms.Products
 
         }
 
-        //鼠标任意键单击时只获取当前对象
+        //爆款鼠标任意键单击时只获取当前对象
         private void PlistView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             AllTrigEvent<ProductsListWin>.MouseAllClickEve(sender,e);
         }
 
-        //双击商品列表里的某行获取信息
+        //爆款双击商品列表里的某行获取信息
         private void PlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             AllTrigEvent<ProductsListWin>.MouseAllClickEve(sender, e);
-
         }
 
-
+        //右键爆款菜单里的添加根发按钮
+        private void AddGenFa_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("添加到跟发");
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+        }
         //右键菜单里的标记已发按钮
         private void FlagYiFa_Click(object sender, RoutedEventArgs e)
         {
@@ -121,11 +125,49 @@ namespace WpfPro.Forms.Products
             AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender,e);
         }
 
-        //右键菜单里的添加根发按钮
-        private void AddGenFa_Click(object sender, RoutedEventArgs e)
+
+        //群发列表里的右键
+        private void AddListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //MessageBox.Show("添加到跟发");
+            AllTrigEvent<ProductsListWin>.MouseAllClickEve(sender, e);
+
+        }
+
+        //群发右键置顶
+        private void ZhiDing_Click(object sender, RoutedEventArgs e)
+        {
             AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
+        }
+        //群发右键上移
+        private void ShangYi_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
+        }
+        //群发右键下移
+        private void XiaYi_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
+        }
+        //群发右键查看跟发内容(双击)
+        private void ChaKanNeiRong_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
+        }
+        //群发右键删除跟发内容
+        private void ShanChuGenFa_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
+        }
+        //群发右键发送选择内容
+        private void FaSongNeiRong_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
+
         }
     }
 }
