@@ -25,6 +25,7 @@ namespace WpfPro.ManageAllCls
         private ProdListModel _pmobj;       //爆款当前点击的列表项对象
         private GenFaMoel _gfobj;       //群发当前点击的列表项对象
         public List<GenFaMoel> GenfaList = new List<GenFaMoel>();
+        public List<WeChatModel> WeChatList = new List<WeChatModel>();
 
 
 

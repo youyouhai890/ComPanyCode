@@ -161,25 +161,6 @@ namespace WpfPro.ToolsCls
 
             return bytes;
 
-            //byte[] bytearray = null;
-            //try
-            //{
-            //    Stream smarket = bmp.StreamSource;
-            //    if (smarket != null && smarket.Length > 0)
-            //    {
-            //        //设置当前位置
-            //        smarket.Position = 0;
-            //        using (BinaryReader br = new BinaryReader(smarket))
-            //        {
-            //            bytearray = br.ReadBytes((int)smarket.Length);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex);
-            //}
-            //return bytearray;
         }
 
 

@@ -169,5 +169,17 @@ namespace WpfPro.Forms.Products
             AllTrigEvent<ProductsListWin>.MenuItemAllClickEve(sender, e);
 
         }
+
+        //微信群输入框
+        private void MATextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.TexInputEve(sender, e);
+        }
+
+        //添加微信群按钮
+        private void MAButton_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
     }
 }

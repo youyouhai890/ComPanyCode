@@ -157,7 +157,7 @@ namespace WpfPro.Controls
                 {
                     ButtLogic<T>.SaveTemplLogic(CurrObj, "2");
                 }
-                else if (CurrObj.Name.Trim() == "Pbutton") //商品列表搜索你牛
+                else if (CurrObj.Name.Trim() == "Pbutton") //商品列表搜索按钮
                 {
                     ButtLogic<T>.SearchGoodsLogic(CurrObj);
                 }
@@ -165,7 +165,11 @@ namespace WpfPro.Controls
                 {
                     ButtLogic<T>.VListRefreshLogic(CurrObj);
                 }
-
+                else if (CurrObj.Name.Trim() == "MAButton") //添加微信群按钮
+                {
+                    //启动线程
+                    ThreadCls<T>.ThreadFunStart(ButtLogic<T>.AddWeChatLogic, CurrObj);
+                }
 
 
                 else
@@ -195,9 +199,10 @@ namespace WpfPro.Controls
 
                     if (CurrObj.Name.Trim() == "AddGenFa") //右键添加跟发
                     {
-                        //ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
+                        //线程
+                        ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
                          // ThreadCls<ProductsListWin>.SyncFun(ButtLogic<T>.AddGenFaLogic, CurrObj);
-                        ButtLogic<T>.AddGenFaLogic(CurrObj);
+                        //ButtLogic<T>.AddGenFaLogic(CurrObj);
                     }
                     else if (CurrObj.Name.Trim() == "FlagYiFa") //右键标记已发
                     {
@@ -227,8 +232,7 @@ namespace WpfPro.Controls
                     {
                         ButtLogic<T>.FaSongNeiRongFaLogic(CurrObj);
                     }
-                
-                     
+
 
 
                     else

@@ -11,7 +11,8 @@ namespace WpfPro.HttpJsons.JsonModel
     public class ProdListModel
     {
         public ProdListModel() { }
-
+        [DataMember]
+        public int BianHao { get; set; } = 0;
         [DataMember]
         public string auctionId { get; set; }="";
         [DataMember]

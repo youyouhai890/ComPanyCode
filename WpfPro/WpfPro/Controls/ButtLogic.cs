@@ -40,7 +40,8 @@ namespace WpfPro.Controls
             if (CurrObj.Name.Trim() == "LUID" || CurrObj.Name.Trim() == "LPASS"
                 || CurrObj.Name.Trim() == "RUID" || CurrObj.Name.Trim() == "RUPASS"
                  || CurrObj.Name.Trim() == "RVEFTCHATXT" || CurrObj.Name.Trim() == "FPHONO"
-                  || CurrObj.Name.Trim() == "FNEWPASS" || CurrObj.Name.Trim() == "FVEfCODE")
+                  || CurrObj.Name.Trim() == "FNEWPASS" || CurrObj.Name.Trim() == "FVEfCODE"
+                  || CurrObj.Name.Trim() == "MATextBox")
             {
 
                 CurrObj.Text = "";
@@ -571,39 +572,16 @@ namespace WpfPro.Controls
                 }
             }
 
-
-
             int j = 0;
             while (j++<20)
             {
-
                     Thread.Sleep(TimeSpan.FromMilliseconds(50));    //应该是间隔时间
                 WeChatMainWinMsgSend("2222222222", hwnd);
 
-               
             }
 
 
         }
-
-
-
-
-
-        //    public static void SendKey(string name, string l)
-        //{
-        //   // var win =Program.FindWindow(null, name);
-        //    IntPtr win = Marshal.StringToHGlobalAnsi(name);
-
-        //        Program.keybd_event(0x01, 0, 0, 0);//激活TIM
-        //        Program.PostMessage(win, 0x0302, 0, 0);
-        //        //    PostMessage(win, 0x0101, new Random().Next(65,128),0);//发送字符                                              //下面是发送回车
-        //        Program.PostMessage(win, 0x0100, 13, 0);
-        //        Program.PostMessage(win, 0x0101, 13, 0);
-        //        Program.keybd_event(0x11, 0, 0x0002, 0);
-
-        //}
-
 
 
 
@@ -700,7 +678,7 @@ namespace WpfPro.Controls
         public static void VListRefreshLogic(object obj)
         {
                 //调用抽象接口 
-                AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao, ShowGoodsListSuccLogic,
+             AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao, ShowGoodsListSuccLogic,
                     "", "1011", "1", "2", "15", MyInfo.GetInstance.UID);
         }
 
@@ -709,16 +687,55 @@ namespace WpfPro.Controls
         public static void ShowGoodsListSuccLogic(MLoginJson<ProdDataModel> model)
         {
             MyInfo.GetInstance.GoodsFlg = false;
-            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");
+            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");  //获取窗口
 
-            List<ProdListModel> viewList = model.data.list;
 
+            List<ProdListModel> viewList = model.data.list; //获取显示的数据
+
+            for (int i = 0; i < viewList.Count; i++)
+            {
+                viewList[i].BianHao = i + 1;
+            }
+
+            pw.PlistView.ItemsSource = null;
             pw.PlistView.ItemsSource = viewList;       //显示到ListView
 
             MyInfo.GetInstance.GoodsFlg = true;
 
-
         }
+
+        //微信列表显示
+        public static void AddWeChatLogic(object obj)
+        {
+                Button but = obj as Button;
+
+            Action action1 = () =>      //匿名方法
+            {
+                Window targetWindow = Window.GetWindow(but); //通过控件找窗体
+                ProductsListWin pw = targetWindow as ProductsListWin;		//类型转换
+                string WCName = pw.MATextBox.Text;  //获取微信名称
+
+                new WeChatModel(WCName);    //创建对象时关联
+                List<WeChatModel> wl = MyInfo.GetInstance.WeChatList;   //微信群
+                string enstr = SerializationTools<List<WeChatModel>>.EnpJsonObj(wl);
+
+                string TextFile = PathTools.LocalDataWeChatFile; //获取文件路径
+                IOTools.WriteFile(TextFile, enstr); //在本地写入内容
+
+
+                pw.WClistView.ItemsSource = null;
+                 pw.WClistView.ItemsSource = MyInfo.GetInstance.WeChatList; //显示
+             };
+             but.Dispatcher.BeginInvoke(action1);
+            // MessageBox.Show("添加微信群");
+        }
+
+
+
+
+#region 右键子项功能
+
+
 
         //添加到跟发
         public static void AddGenFaLogic(object obj)
@@ -730,30 +747,29 @@ namespace WpfPro.Controls
         public static void GenFaLogic(object obj)
         {
 
-            //获取指定控件的父窗体
-           // Window targetWindow = Window.GetWindow(gd); //通过控件找窗体
-            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm"); ;      //类型转换
-
+            //获取窗口
+            ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm"); ;      
             ProdListModel emp = MyInfo.GetInstance.CurrPmObj;   //获取选中对象
 
             //构造函数自动关联对象,存储全部跟发信息
-            GenFaMoel gfm = null;
-            gfm = new GenFaMoel(
+            new GenFaMoel(
                         MyInfo.GetInstance.CurrId,
                         emp.createTime,
                         emp.title,
                         "未发送"
                          );
 
+
+            List<GenFaMoel> gf = MyInfo.GetInstance.GenfaList;  //跟发群
+            string enstr = SerializationTools<List<GenFaMoel>>.EnpJsonObj(gf);
+
+            string TextFile = PathTools.LocalDataGenFaFile; //获取跟发文件路径
+            IOTools.WriteFile(TextFile, enstr); //在本地写入内容
+
+
             //显示到listview里
-            pw.AddListView.Items.Add(new 
-            {
-                    id = gfm.id,
-                    time = gfm.time,
-                    title = gfm.title,
-                    state = gfm.state,
-             });
-            
+            pw.AddListView.ItemsSource = null;      //先清空
+            pw.AddListView.ItemsSource = MyInfo.GetInstance.GenfaList;
 
         }
 
@@ -792,8 +808,11 @@ namespace WpfPro.Controls
         public static void FaSongNeiRongFaLogic(object obj)
         {
             MessageBox.Show("发送内容");
-        }      
+        }
+  #endregion
 
+
+        
 
     }
 }

@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:WpfPro.Forms.Products"
         mc:Ignorable="d"
         Title="淘客助手" Height="726" Width="1333.969" Loaded="Window_Loaded">
-
+    <Window.Resources>
+        <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        </Style>
+    </Window.Resources>
+       
     <Grid Margin="0,10,0,0">
-
         <DockPanel Height="37" LastChildFill="False" VerticalAlignment="Top" Margin="0,-12,0,0">
             <Image x:Name="HeadImage" Margin="1100,2,0,0" Source="/Resources/HeadPict.jpeg"  Height="34" VerticalAlignment="Top" Width="50"/>
             <ComboBox x:Name="RComboBox1" Height="34" VerticalAlignment="Top" Width="155" Background="White" Foreground="#FF2E2E2E" FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#00000000" Margin="0,4,0,-1">
@@ -46,14 +50,14 @@
                                         </ContextMenu>
                                     </GridView.ColumnHeaderContextMenu>
                                     <!--<GridViewColumn Header="#" Width="50" DisplayMemberBinding="{Binding Path=JingHao}"/>-->
-                                    <GridViewColumn Header="商品ID" Width="50" DisplayMemberBinding="{Binding  auctionId}"/>
-                                    <GridViewColumn Header="标题" Width="200"   DisplayMemberBinding="{Binding title}"/>
+                                    <GridViewColumn Header="#" Width="50" DisplayMemberBinding="{Binding  BianHao}"/>
+                                    <GridViewColumn Header="标题" Width="300"   DisplayMemberBinding="{Binding title}"/>
                                     <GridViewColumn Header="原价" Width="90"  DisplayMemberBinding="{Binding zkPrice}"/>
                                     <GridViewColumn Header="优惠劵金额" Width="90" DisplayMemberBinding="{Binding couponAmount}"/>
                                     <GridViewColumn Header="佣金比例" Width="90" DisplayMemberBinding="{Binding maxCommissionRate}"/>
                                     <GridViewColumn Header="卷后价" Width="90" DisplayMemberBinding="{Binding afterCouponPrice}"/>
                                     <GridViewColumn Header="销量" Width="90" DisplayMemberBinding="{Binding biz30day}"/>
-                                    <GridViewColumn Header="地址" Width="120" DisplayMemberBinding="{Binding Path=pictUrl}"/>
+                                    <GridViewColumn Header="地址" Width="350" DisplayMemberBinding="{Binding Path=pictUrl}"/>
                                     <!--path可以省略-->
                                 </GridView>
                             </ListView.View>
@@ -71,7 +75,8 @@
 
                         <TabControl x:Name="tabControl1" Height="469" VerticalAlignment="Top" Canvas.Top="61" Width="618" Canvas.Left="6">
                             <TabItem Header="自动跟发" Margin="10,-2,-14,-1" Foreground="#FFFF9800" FontSize="14">
-                                <StackPanel Margin="0,0,0,-4">
+                                <StackPanel Margin="0,0,0,-2">
+                                    <Label Height="2"  Margin="-10,-7,-10,0" Background="#FFBBBBBB"/>
                                     <DockPanel Height="49" Margin="0,0,-2,0" LastChildFill="False" VerticalAlignment="Top" >
                                         <Button x:Name="MAButt1" Margin="8,8,0,0" Content="开始发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                         <Button x:Name="MAButt2" Margin="8,8,0,0" Content="停止发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
@@ -79,6 +84,7 @@
                                         <Button x:Name="MAButt4" Margin="8,8,0,0" Content="删除全部" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                     </DockPanel>
                                     <StackPanel Margin="0,0,0,0">
+                                        <Label Height="2" Margin="-10,0,-10,0" Background="#FFBBBBBB"/>
                                         <DockPanel  LastChildFill="False" Margin="0,10,0,0">
                                             <CheckBox x:Name="MACheckBox" Content="立即发送" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-8,-10,0,0" Width="83"/>
                                             <CheckBox x:Name="MACheckBox2" Content="发送时间段" Margin="20,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-5,-10,0,0" Width="100"/>
@@ -102,11 +108,11 @@
 
                                         </DockPanel>
                                     </StackPanel>
-                                    <ListView x:Name="AddListView" Height="295"  PreviewMouseDown="AddListView_PreviewMouseDown" >
+                                    <ListView x:Name="AddListView" Height="295" ItemContainerStyle="{StaticResource ResourceKey=ListViewItemStyle}" PreviewMouseDown="AddListView_PreviewMouseDown" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" >
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.ColumnHeaderContextMenu>
-                                                    <ContextMenu Name="QContMenu">
+                                                    <ContextMenu Name="QContMenu" HorizontalAlignment="Center">
                                                         <MenuItem Header="置顶" Name="ZhiDing" Click="ZhiDing_Click" />
                                                         <MenuItem Header="上移" Name="ShangYi" Click="ShangYi_Click" />
                                                         <MenuItem Header="下移" Name="XiaYi" Click="XiaYi_Click" />
@@ -115,7 +121,7 @@
                                                         <MenuItem Header="发送选择内容" Name="FaSongNeiRong" Click="FaSongNeiRong_Click"/>
                                                     </ContextMenu>
                                                 </GridView.ColumnHeaderContextMenu>
-                                                <GridViewColumn Header="#" Width="70" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Header="#"       Width="70" DisplayMemberBinding="{Binding id}"/>
                                                 <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding time}"/>
                                                 <GridViewColumn Header="内容" Width="250" DisplayMemberBinding="{Binding title}"/>
                                                 <GridViewColumn Header="状态" Width="150" DisplayMemberBinding="{Binding state}"/>
@@ -126,20 +132,32 @@
                             </TabItem>
                         </TabControl>
                         <TabControl x:Name="tabControl2" Height="469" VerticalAlignment="Top" Canvas.Top="61" Width="573" Canvas.Left="635">
-                            <TabItem Header="QQ微信群" Margin="14,-2,-23,-1" Foreground="#FFFF9800" FontSize="14">
+                            <TabItem Header="微信群" Margin="14,-2,-23,-1" Foreground="#FFFF9800" FontSize="14">
                                 <StackPanel Margin="0,0,0,-4">
                                     <DockPanel Height="43" LastChildFill="False" VerticalAlignment="Top" Margin="0,6,0,0">
-                                        <TextBox x:Name="MATextBox" Text="微信群名称(不要符号)" Margin="0,5,0,5" Width="253" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                                        <Button x:Name="MAButton" Content="添加微信群" Margin="0,5,0,5" Width="80"/>
-                                        <Label x:Name="MALabel7" Content="如何添加微信群" Margin="0,6,0,7" FontSize="15"  Width="115" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="MATextBox" Text="微信群名称(不要符号)" Margin="5,5,0,5" Width="253" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" PreviewMouseDown="MATextBox_PreviewMouseDown" />
+                                        <Button x:Name="MAButton" Content="添加微信群" Margin="-3,5,0,5" Width="80" Background="#FFFF9800" Foreground="White" Click="MAButton_Click"/>
+                                        <Label x:Name="MALabel7" Content="如何添加微信群" Margin="5,6,0,7" FontSize="15"  Width="123" VerticalAlignment="Center"/>
                                     </DockPanel>
-                                    <ListView x:Name="listView1" Height="226">
+                                    <ListView x:Name="WClistView" Height="226" IsSynchronizedWithCurrentItem="True" ItemContainerStyle="{StaticResource   ResourceKey=ListViewItemStyle}" >
                                         <ListView.View>
-                                            <GridView>
-                                                <GridViewColumn Header="#" Width="50"/>
-                                                <GridViewColumn Header="群名称" Width="140"/>
-                                                <GridViewColumn Header="发送顺序" Width="150"/>
-                                                <GridViewColumn Header="操作" Width="140"/>
+                                            <GridView >
+                                                <GridViewColumn Header="#" Width="50" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Header="群名称" Width="140" DisplayMemberBinding="{Binding QunMingCheng}"/>
+                                                <GridViewColumn Header="发送顺序" Width="150">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="↑↓"  Width="30" Height="23" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="操作" Width="140">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="删除"  Width="75" Height="23" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
