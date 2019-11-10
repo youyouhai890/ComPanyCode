@@ -34,11 +34,19 @@ namespace WpfPro.ManageAllCls
             {
                 MessageBox.Show(ex.ToString());
             }
-            Action<object> Fun = fFun;
 
 
         }
+        //开启线程
+        private void ThreadDelegateFun(Action<object> fun, object parm)
+        {
+            Thread objThread = new Thread(new ThreadStart(delegate
+            {
+                fun(parm);
+            }));
 
+            objThread.Start();
+        }
 
 
         //UI线程托管按钮
@@ -71,13 +79,41 @@ namespace WpfPro.ManageAllCls
         }
 
 
+        //同步的委托方法 ,线程托管menuItem
+        public static void ThreadIvkFun(object parm, Action<object> Fun)
+        {
 
+            ParmObj poj = parm as ParmObj;
+            Button but = poj.ParmArray[0] as Button;
+
+            but.Dispatcher.Invoke(new Action(() =>
+            {
+                  Fun(parm);
+            }));
+        }
+
+
+
+
+        //跨线程更新UI
         public static void SyncFun(SendOrPostCallback fFun, object pram)
         {
             ProductsListWin.sync.Post(fFun, pram);
         }
 
-        
+
+        //线程池
+       //public const int cycleNum = 10;
+         public  static void ThreadPoolFun(Action<object> Fun ,object parm)
+        {
+            ThreadPool.SetMinThreads(1, 2); //创建的线程最少数量
+            ThreadPool.SetMaxThreads(2, 5); //活动状态的线程数量
+            //for (int i = 1; i <= cycleNum; i++)
+           // {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Fun), parm);
+            //}
+
+        }
 
 
     }

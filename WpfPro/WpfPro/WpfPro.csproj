@@ -160,7 +160,7 @@
     <Compile Include="ManageAllCls\ManWinCls.cs" />
     <Compile Include="ManageAllCls\MyInfo.cs" />
     <Compile Include="ManageAllCls\ObserverCls.cs" />
-    <Compile Include="ManageAllCls\PramObj.cs" />
+    <Compile Include="ManageAllCls\ParmObj.cs" />
     <Compile Include="ManageAllCls\ThreadCls.cs" />
     <Compile Include="TestCode\TestCls.cs" />
     <Compile Include="ToolsCls\GetOrSetTools.cs" />

@@ -79,7 +79,7 @@
                                     <Label Height="2"  Margin="-10,-7,-10,0" Background="#FFBBBBBB"/>
                                     <DockPanel Height="49" Margin="0,0,-2,0" LastChildFill="False" VerticalAlignment="Top" >
                                         <Button x:Name="MAButt1" Margin="8,8,0,0" Content="开始发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White" Click="MAButt1_Click"/>
-                                        <Button x:Name="MAButt2" Margin="8,8,0,0" Content="停止发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
+                                        <Button x:Name="MAButt2" Margin="8,8,0,11" Content="停止发送" Width="75" Background="#FFFF9800" Foreground="White"/>
                                         <Button x:Name="MAButt3" Margin="120,8,0,0" Content="删除选中" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                         <Button x:Name="MAButt4" Margin="8,8,0,0" Content="删除全部" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                     </DockPanel>

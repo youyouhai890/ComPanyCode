@@ -9,11 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using WpfPro.ManageAllCls;
 
 namespace WpfPro.ToolsCls
 {
 
-    //窗口句柄的控制
+    //窗口句柄的控制,窗口句柄不能用泛型
     class WinHandle
     {
 
@@ -90,6 +92,10 @@ namespace WpfPro.ToolsCls
         [DllImport("user32.dll")]
         private static extern int GetClassNameW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
 
+        [DllImport("User32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd); //激活窗口
+
+
         //自定义一个类，用来保存句柄信息，在遍历的时候，随便也用空上句柄来获取些信息，呵呵 
         public struct WindowInfo
         {
@@ -119,10 +125,10 @@ namespace WpfPro.ToolsCls
                 }
             }
 
-            if (hwndName == "" || hwndName == null)
-            {
-                MessageBox.Show("没有获取到匹配的窗口...");
-            }
+            //if (hwndName == "" || hwndName == null)
+            //{
+            //    MessageBox.Show("没有获取到匹配的窗口...");
+            //}
 
             return hwndName;
         }
@@ -173,20 +179,39 @@ namespace WpfPro.ToolsCls
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(String ClassName, String WindwosName);  //用于查找窗口
 
-        [DllImport("user32")]
-        public static extern int SetForegroundWindow(IntPtr hwnd);
 
 
 
-        //第一个参数为内容 , 第二个为窗口句柄
-        public static void WeChatMainWinMsgSend(string Content,string WinName)
+
+       
+        //public static void WeChatMainWinMsgSend(string Content,string WinName)
+        public static void WeChatMainWinMsgSend(object parm)
         {
-            //参数为窗口类 , 窗口名
-            // IntPtr win = FindWindow(null, WinName);    //"WeChatMainWndForPC" 为微信默认打开的主窗口
-            IntPtr win = GetStringToIntptr(WinName);
-            SetForegroundWindow(win);
-            System.Windows.Forms.SendKeys.SendWait(Content);
-            System.Windows.Forms.SendKeys.SendWait("{ENTER}");
+            ParmObj poj = parm as ParmObj;
+            Button but = poj.ParmArray[0] as Button;
+            string ContTxt = poj.ParmArray[1] as string;
+            int NumOf = (int)poj.ParmArray[2];
+            int time = (int)poj.ParmArray[3];
+            string HwndStr = poj.ParmArray[4] as string;
+
+            Action action1 = () =>      //匿名方法
+            {
+
+                //当前线程间隔时间,已经是在线程里面
+                for (int i = 0; i < NumOf; i++)
+                {
+                    //参数为窗口类 , 窗口名
+                    // IntPtr win = FindWindow(null, WinName);    //"WeChatMainWndForPC" 为微信默认打开的主窗口
+                    IntPtr win = GetStringToIntptr(HwndStr);
+                     SetForegroundWindow(win);  //激活窗口
+                    Thread.Sleep(TimeSpan.FromMilliseconds(300));  //激活以后暂停300毫秒
+                    System.Windows.Forms.SendKeys.SendWait(ContTxt);
+                    System.Windows.Forms.SendKeys.SendWait("{ENTER}");
+                }
+
+            };
+            but.Dispatcher.BeginInvoke(action1);
+
         }
 
 
@@ -209,14 +234,11 @@ namespace WpfPro.ToolsCls
         }
 
         //发送微信消息 , 参数为内容 , 次数 ,句柄
-        public static void WinSendMsg(string ContTxt, int CiShu ,string HwndStr)
+        //public static void WinSendMsg(string ContTxt, int CiShu ,int time,string HwndStr)
+        public static void WinSendMsg( object parm)
         {
-            int j = 0;
-            while (j++ < CiShu)
-            {
-                Thread.Sleep(TimeSpan.FromMilliseconds(50));    //应该是间隔时间
-                WeChatMainWinMsgSend(ContTxt, HwndStr);
-            }
+            WeChatMainWinMsgSend(parm);
+
         }
 
 

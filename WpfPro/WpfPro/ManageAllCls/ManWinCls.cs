@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,8 +16,9 @@ namespace WpfPro.ManageAllCls
     {
         //static List<Window> WinList = new List<Window>();
 
-       // public static IDictionary<string, IntPtr> WinHandle = new Dictionary<string, IntPtr>();
+        // public static IDictionary<string, IntPtr> WinHandle = new Dictionary<string, IntPtr>();
 
+            //激活窗口
 
         //键值对
         static IDictionary<string, Window> WinIDictt = new Dictionary<string, Window>();

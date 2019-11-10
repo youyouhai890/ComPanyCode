@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:WpfPro"                 
              xmlns:tb="http://www.hardcodet.net/taskbar"
              Startup="Application_Startup"
-             ShutdownMode="OnExplicitShutdown" >    <!--只有在调用Application对象的Shutdown()方法时，应用程序才会关闭-->
+             ShutdownMode="OnExplicitShutdown">    <!--只有在调用Application对象的Shutdown()方法时，应用程序才会关闭-->
     <Application.Resources>
         <tb:TaskbarIcon x:Key="KeyIco"
                       ToolTipText="畅微软件"

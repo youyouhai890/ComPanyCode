@@ -289,7 +289,7 @@ namespace WpfPro.Controls
             else if (pw.BaoKuan.IsSelected)      //判断爆款页面有没有被选中
             {
 
-                PramObj po = new PramObj(2);
+                ParmObj po = new ParmObj(2);
                 //存参数
                 po.ParmArray[0] = sender; //sender
                 po.ParmArray[1] = e;   //e

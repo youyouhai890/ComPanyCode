@@ -23,7 +23,7 @@ using WpfPro.ManageAllCls;
 using WpfPro.TestCode;
 using WpfPro.ToolsCls;
 using static WpfPro.ManageAllCls.ManaEnumCls;
-using static WpfPro.ToolsCls.WinHandle;
+
 
 namespace WpfPro.Controls
 {
@@ -426,7 +426,7 @@ namespace WpfPro.Controls
             string uid = MyInfo.GetInstance.UID;
 
             //接口参数
-            PramObj poj = new PramObj(7);
+            ParmObj poj = new ParmObj(7);
             poj.ParmStrArray[0] = uid;
             poj.ParmStrArray[1] = emp.auctionId;
             poj.ParmStrArray[2] = emp.activityId;
@@ -445,7 +445,7 @@ namespace WpfPro.Controls
                     if (model.code == 200)       //授权成功状态
                     {
                         //参数
-                        PramObj pj2 = new PramObj(2);
+                        ParmObj pj2 = new ParmObj(2);
 
                     pj2.ParmArray[0] = emp;         //ProdListModel对象
                     pj2.ParmArray[1] = model.data;      //TurnDataModel对象
@@ -476,7 +476,7 @@ namespace WpfPro.Controls
           //  lock (ButLockObj)
           //  {
 
-                 PramObj pj = pobjs as PramObj;
+                 ParmObj pj = pobjs as ParmObj;
                  ListView lv = pj.ParmArray[0] as ListView;
                 Action action1 = () =>      //匿名方法
                 {
@@ -754,31 +754,42 @@ namespace WpfPro.Controls
         public static void SendLinkImgLogic(object obj)
         {
             Button but = obj as Button;
+            //ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");
 
-            Action action1 = () =>      //匿名方法
-            {
-                //Window targetWindow = Window.GetWindow(but); //通过控件找窗体
-                //ProductsListWin pw = targetWindow as ProductsListWin;		//类型转换
-                SendLogic();
-
-            };
-            but.Dispatcher.BeginInvoke(action1);
-            // MessageBox.Show("添加微信群");
-        }
+            List<WeChatModel> lst = MyInfo.GetInstance.WeChatList;
 
 
+            string ConStr = "囧囧囧囧囧囧囧囧";
+            int NumOf = 5;
+            int time = 50;
 
-        public static void SendLogic()
-        {
-            
-
-
+            ParmObj poj = new ParmObj(5);
+            poj.ParmArray[0] = but;
+            poj.ParmArray[1] = ConStr;
+            poj.ParmArray[2] = NumOf;
+            poj.ParmArray[3] = time;
 
             string HwndStr = string.Empty;
-            //查找指定窗口句柄
-            HwndStr = AssignWinHwnd("A_엄마");
-            //发送微信消息 , 参数为内容 , 次数 ,句柄
-            WinSendMsg("555555555555", 5, HwndStr);
+
+
+            for (int i = 0; i < lst.Count; i++)
+            {
+                //每次循环最好暂停一下
+                Thread.Sleep(TimeSpan.FromMilliseconds(1000));
+                //查找指定窗口句柄
+                HwndStr = WinHandle.AssignWinHwnd(lst[i].QunMingCheng);
+                if (HwndStr == null || HwndStr == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    // MessageBox.Show(HwndStr); //句柄显示
+                    poj.ParmArray[4] = HwndStr;
+                    ThreadCls<object>.ThreadPoolFun(WinHandle.WinSendMsg, poj); //开启线程池
+                }
+
+            }
 
         }
 
@@ -787,7 +798,9 @@ namespace WpfPro.Controls
 
 
 
- #region 右键子项功能
+
+
+        #region 右键子项功能
 
 
 

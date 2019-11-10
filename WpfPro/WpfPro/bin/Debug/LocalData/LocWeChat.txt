@@ -1,1 +1,1 @@
-[{"QunMingCheng":"A_엄마","id":1}]
+[{"QunMingCheng":"A_엄마","id":1},{"QunMingCheng":"A_아빠","id":2},{"QunMingCheng":"群test1","id":3},{"QunMingCheng":"群test2","id":4}]

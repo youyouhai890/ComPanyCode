@@ -22,7 +22,7 @@ namespace WpfPro
     {
 
         //用于托盘,启动时
-        private TaskbarIcon _KeyIco;
+       // private TaskbarIcon _KeyIco;
        //主函数入口
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -39,8 +39,8 @@ namespace WpfPro
                 LoginInputWin LogInp = new LoginInputWin();        //作为主窗口启动
                 LogInp.Title = "Login";        //窗口标题
                 //ManWinCls<LoginInputWin>.OpenOrCreatWin("LoginInputWinForm");
-               // ManWinCls<LoginInputWin>.ShowDialogWin(LogInp);
-                 ManWinCls<LoginInputWin>.ShowWin(LogInp);
+                ManWinCls<LoginInputWin>.ShowDialogWin(LogInp);
+                 //ManWinCls<LoginInputWin>.ShowWin(LogInp);
             }
             else
             {
@@ -141,17 +141,6 @@ namespace WpfPro
                 ShowWindowAsync(instance.MainWindowHandle, WS_SHOWNORMAL); //显示，可以注释掉 
                 SetForegroundWindow(instance.MainWindowHandle);            //放到前端 
             }
-
-            private static void initEnv()
-            {
-
-                Config.AllEnvirConfInit(); //管理所有环境
-
-                //下面这个比较耗时
-                System.Environment.SetEnvironmentVariable("TYH_HOME", AppDomain.CurrentDomain.BaseDirectory, EnvironmentVariableTarget.User);
-            }
-
-
 
             static void EnvirInit()
             {

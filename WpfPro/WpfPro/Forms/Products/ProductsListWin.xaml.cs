@@ -191,6 +191,7 @@ namespace WpfPro.Forms.Products
         //群发助手,开始发送
         private void MAButt1_Click(object sender, RoutedEventArgs e)
         {
+
             AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
 
         }
