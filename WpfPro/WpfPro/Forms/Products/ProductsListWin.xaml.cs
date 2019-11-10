@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,9 @@ namespace WpfPro.Forms.Products
 
     public partial class ProductsListWin : Window
     {
+
+
+
         public static bool RightButt = false;
         //异步更新,线程通信
         public  static SynchronizationContext sync;
@@ -42,7 +46,9 @@ namespace WpfPro.Forms.Products
 
             //关闭当前窗口,在属性窗口那里貌似找不到这事件，但是可以手动注册
             this.Closing += new ManWinCls<ProductsListWin>().WinClose;
+
         }
+
 
         //加载窗口时触发的函数
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -180,6 +186,13 @@ namespace WpfPro.Forms.Products
         private void MAButton_Click(object sender, RoutedEventArgs e)
         {
             AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+        }
+
+        //群发助手,开始发送
+        private void MAButt1_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
         }
     }
 }

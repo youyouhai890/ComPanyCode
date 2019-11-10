@@ -34,6 +34,12 @@ namespace WpfPro.HttpJsons.JsonModel
         [DataMember]
         public string maxCommissionRate { get;  set; }="";      //佣金比例
 
+        /// ///////////////////不是从接口里获取的/////////////////////
+
+        [DataMember]
+        public string createTime { get; set; } = "";      //
+        [DataMember]
+        public string title { get; set; } = "";      //标题
 
 
 

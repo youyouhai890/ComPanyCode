@@ -24,6 +24,9 @@ namespace WpfPro.Controls
     /// </summary>
     class AllTrigEvent<T> where T : Window
     {
+        //要锁的对象
+        private static readonly object LockEveObj = new object();
+
 
         //鼠标点击textbox的事件
         public static void TexInputEve(object sender,MouseButtonEventArgs e)
@@ -170,8 +173,12 @@ namespace WpfPro.Controls
                     //启动线程
                     ThreadCls<T>.ThreadFunStart(ButtLogic<T>.AddWeChatLogic, CurrObj);
                 }
-
-
+                else if (CurrObj.Name.Trim() == "MAButt1") //群发助手开始发送按钮
+                {
+                    //启动线程
+                    ThreadCls<T>.ThreadFunStart(ButtLogic<T>.SendLinkImgLogic, CurrObj);
+                }
+                
                 else
                 {
                     MessageBox.Show("找不到匹配项....");
@@ -200,11 +207,14 @@ namespace WpfPro.Controls
                     if (CurrObj.Name.Trim() == "AddGenFa") //右键添加跟发
                     {
                         //线程
-                        ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
-                         // ThreadCls<ProductsListWin>.SyncFun(ButtLogic<T>.AddGenFaLogic, CurrObj);
-                        //ButtLogic<T>.AddGenFaLogic(CurrObj);
-                    }
-                    else if (CurrObj.Name.Trim() == "FlagYiFa") //右键标记已发
+                       ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.AddGenFaLogic, CurrObj);
+
+                    // ButtLogic<TurnDataModel>.ListViewLogic(sender, ButtLogic<ProductsListWin>.AddGenFaLogic);    //显示双击信息,转立案后的界面
+
+                    // ThreadCls<ProductsListWin>.SyncFun(ButtLogic<T>.AddGenFaLogic, CurrObj);
+                    //ButtLogic<T>.AddGenFaLogic(CurrObj);
+                }
+                else if (CurrObj.Name.Trim() == "FlagYiFa") //右键标记已发
                     {
                         ButtLogic<T>.FlagYiFaLogic(CurrObj);
                     }
@@ -254,7 +264,7 @@ namespace WpfPro.Controls
 
 #endregion
 
-
+        
 
 #region 处理所有鼠标路由
         public static void MouseAllClickEve(object sender, MouseButtonEventArgs e)
@@ -263,12 +273,28 @@ namespace WpfPro.Controls
 
             if (e.ClickCount == 2 && pw.BaoKuan.IsSelected ) //如果是双击 , 在判断爆款页面有没有被选中
             {
-                //双击商品列表里的某行
-                ButtLogic<T>.ListViewLogic(sender);    //显示双击信息
+
+                ListView lv = sender as ListView;
+                Action action1 = () =>      //匿名方法
+                {
+                    //双击商品列表里的某行
+                    //ButtLogic<T>.ListViewLogic(sender);    //显示双击信息
+
+                    ButtLogic<ListView>.ListViewLogic( ButtLogic<ProductsListWin>.TurnToCopyLogic);    //显示双击信息,转立案后的界面
+
+                };
+                lv.Dispatcher.BeginInvoke(action1);
+
             }
             else if (pw.BaoKuan.IsSelected)      //判断爆款页面有没有被选中
             {
-                ButtLogic<T>.GetCurrObjLogic(sender,e);    //鼠标任意键获取对象
+
+                PramObj po = new PramObj(2);
+                //存参数
+                po.ParmArray[0] = sender; //sender
+                po.ParmArray[1] = e;   //e
+                ThreadCls<ProductsListWin>.ThreadFunStart(ButtLogic<T>.GetCurrObjLogic , po);
+                //ButtLogic<T>.GetCurrObjLogic(sender,e);    //鼠标任意键获取对象
 
             }
             else if ( pw.QunFa.IsSelected)
@@ -279,9 +305,9 @@ namespace WpfPro.Controls
 
         }
 
-#endregion
+        #endregion
 
-
+#region 处理窗口加载的事件
 
         //窗口加载时的路由
         public static void LoadedWinEve(object sender)
@@ -293,7 +319,12 @@ namespace WpfPro.Controls
                 {
                     //启动线程,商品列表显示,当前控件 , 方法的参数必须为object
                     ThreadCls<T>.ThreadFunStart(WinLoadedLogic<T>.ProLiewViewLogic, sender);
-                    WinLoadedLogic<T>.ReadTemplLogic(sender); //读取模版的处理逻辑
+                    //读取模版的处理逻辑
+                    ThreadCls<T>.ThreadFunStart(WinLoadedLogic<T>.ReadTemplLogic, sender);
+                   // WinLoadedLogic<T>.ReadTemplLogic(sender);
+                    //获取本地数据列表的逻辑
+                    ThreadCls<T>.ThreadFunStart(WinLoadedLogic<T>.LoadLocDataLogic, sender);
+
                 }
                 else
                 {
@@ -308,16 +339,24 @@ namespace WpfPro.Controls
 
 
         }
+        #endregion
 
+
+ #region 处理窗口关闭
         //窗口关闭事件
         public static void WinCloseEve(object sender, CancelEventArgs e)
         {
             T win = sender as T;
+            if (win == null)
+            {
+                return;
+            }
+
             try
             {
-                if (win.Name == "RegWinForm" )   //注册窗口
+                if (win.Name == "RegWinForm")   //注册窗口
                 {
-                   ManWinCls<RegWin>.CloseWin(win, e);
+                    ManWinCls<RegWin>.CloseWin(win, e);
                     return;
                 }
                 else if (win.Name == "ForWinForm")   //注册窗口
@@ -334,10 +373,11 @@ namespace WpfPro.Controls
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                MessageBox.Show(ex.ToString());
             }
         }
+ #endregion
+
     }
 
 

@@ -83,6 +83,7 @@ D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\WpfPro.pdb
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Common.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Core.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Winforms.dll
+D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Newtonsoft.Json.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\SQLite.Designer.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\System.Data.SQLite.dll
@@ -91,7 +92,8 @@ D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\EnvDTE.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\stdole.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Core.pdb
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Geckofx-Winforms.pdb
-D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csprojResolveAssemblyReference.cache
+D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Hardcodet.Wpf.TaskbarNotification.xml
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Interop.mscoree.dll
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Interop.SHDocVw.dll
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csproj.ResolveComReference.cache
@@ -117,5 +119,6 @@ D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.Properties.Resources.resources
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csproj.GenerateResource.Cache
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.exe
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.pdb
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csprojResolveAssemblyReference.cache
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.VisualStudio.VSHelp.dll
 D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.MSXML.dll

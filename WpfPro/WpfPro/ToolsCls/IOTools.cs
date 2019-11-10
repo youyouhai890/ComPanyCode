@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using WpfPro.ManageAllCls;
 
 namespace WpfPro.ToolsCls
 {
@@ -112,6 +113,25 @@ namespace WpfPro.ToolsCls
             {
                 //先写入
                 IOTools.WriteFile(path, Configs.Config.SetTemplateText_1());
+                //后读取
+                Cont = IOTools.ReadFile(path);
+            }
+                return Cont;
+        }
+
+        //读取本地数据
+        public static string WRLoc(string path)
+        {
+            string Cont;
+            if (File.Exists(path))     //检测模版是否存在
+            {
+                //读取内容
+                Cont = IOTools.ReadFile(path);
+            }
+            else  //如果不存在需要先创建文件并写入默认内容,然后再读取
+            {
+                //先写入
+                IOTools.WriteFile(path, "");
                 //后读取
                 Cont = IOTools.ReadFile(path);
             }

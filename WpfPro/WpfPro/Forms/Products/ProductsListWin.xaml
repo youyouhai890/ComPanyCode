@@ -11,10 +11,10 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
         </Style>
     </Window.Resources>
-       
+
     <Grid Margin="0,10,0,0">
         <DockPanel Height="37" LastChildFill="False" VerticalAlignment="Top" Margin="0,-12,0,0">
-            <Image x:Name="HeadImage" Margin="1100,2,0,0" Source="/Resources/HeadPict.jpeg"  Height="34" VerticalAlignment="Top" Width="50"/>
+            <Image x:Name="HeadImage" Margin="1100,2,0,0" Source="/Resource/HeadPict.jpeg"  Height="34" VerticalAlignment="Top" Width="50"/>
             <ComboBox x:Name="RComboBox1" Height="34" VerticalAlignment="Top" Width="155" Background="White" Foreground="#FF2E2E2E" FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#00000000" Margin="0,4,0,-1">
                 <ComboBoxItem Content="15950910338" IsSelected="True" Height="34" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
                 <ComboBoxItem Content="222" Height="34" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -24,8 +24,8 @@
             <TabItem Header="全网爆款分享" Name="BaoKuan" Margin="-2,-2,2,-2" Height="40" FontSize="13" Width="100">
                 <Grid Background="White" Margin="0,-2,-4,-1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="27*"/>
-                        <ColumnDefinition Width="217*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Canvas Grid.ColumnSpan="2">
                         <Line X1="0" Y1="50" X2="1220" Y2="50" Stroke="#FFF6F6F6"  StrokeThickness="3" HorizontalAlignment="Left" Width="1218"/>
@@ -44,7 +44,7 @@
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContextMenu>
-                                        <ContextMenu Name="BContMenu" >
+                                        <ContextMenu Name="BContMenu"  >
                                             <MenuItem Name="AddGenFa" Header="添加到跟发" Click="AddGenFa_Click"  />
                                             <MenuItem Name="FlagYiFa" Header="标记已发" Click="FlagYiFa_Click" />
                                         </ContextMenu>
@@ -63,7 +63,7 @@
                             </ListView.View>
                         </ListView>
                     </Canvas>
-                    <Button x:Name="LButton1" Content="刷新" Margin="938,52,45,0" VerticalAlignment="Top" Height="35" Background="#FFFF9800" Foreground="White" Click="LButton1_Click" Grid.Column="1"/>
+                    <Button x:Name="LButton1" Content="刷新" Margin="903,52,47,0" VerticalAlignment="Top" Height="35" Background="#FFFF9800" Foreground="White" Click="LButton1_Click" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem  Header="群发助手" Name="QunFa" Margin="-2,2,2,-2" Height="40">
@@ -78,7 +78,7 @@
                                 <StackPanel Margin="0,0,0,-2">
                                     <Label Height="2"  Margin="-10,-7,-10,0" Background="#FFBBBBBB"/>
                                     <DockPanel Height="49" Margin="0,0,-2,0" LastChildFill="False" VerticalAlignment="Top" >
-                                        <Button x:Name="MAButt1" Margin="8,8,0,0" Content="开始发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
+                                        <Button x:Name="MAButt1" Margin="8,8,0,0" Content="开始发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White" Click="MAButt1_Click"/>
                                         <Button x:Name="MAButt2" Margin="8,8,0,0" Content="停止发送" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                         <Button x:Name="MAButt3" Margin="120,8,0,0" Content="删除选中" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
                                         <Button x:Name="MAButt4" Margin="8,8,0,0" Content="删除全部" Height="30" VerticalAlignment="Top" Width="75" Background="#FFFF9800" Foreground="White"/>
@@ -108,11 +108,11 @@
 
                                         </DockPanel>
                                     </StackPanel>
-                                    <ListView x:Name="AddListView" Height="295" ItemContainerStyle="{StaticResource ResourceKey=ListViewItemStyle}" PreviewMouseDown="AddListView_PreviewMouseDown" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" >
+                                    <ListView x:Name="AddListView" Height="295" ItemContainerStyle="{StaticResource   ResourceKey=ListViewItemStyle}"  PreviewMouseDown="AddListView_PreviewMouseDown" IsSynchronizedWithCurrentItem="True" VerticalAlignment="Center" HorizontalContentAlignment="Center" >
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.ColumnHeaderContextMenu>
-                                                    <ContextMenu Name="QContMenu" HorizontalAlignment="Center">
+                                                    <ContextMenu Name="QContMenu" HorizontalAlignment="Left">
                                                         <MenuItem Header="置顶" Name="ZhiDing" Click="ZhiDing_Click" />
                                                         <MenuItem Header="上移" Name="ShangYi" Click="ShangYi_Click" />
                                                         <MenuItem Header="下移" Name="XiaYi" Click="XiaYi_Click" />
@@ -121,10 +121,24 @@
                                                         <MenuItem Header="发送选择内容" Name="FaSongNeiRong" Click="FaSongNeiRong_Click"/>
                                                     </ContextMenu>
                                                 </GridView.ColumnHeaderContextMenu>
-                                                <GridViewColumn Header="#"       Width="70" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Header="#"       Width="50" DisplayMemberBinding="{Binding id}"/>
                                                 <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding time}"/>
-                                                <GridViewColumn Header="内容" Width="250" DisplayMemberBinding="{Binding title}"/>
-                                                <GridViewColumn Header="状态" Width="150" DisplayMemberBinding="{Binding state}"/>
+                                                <GridViewColumn Header="内容" Width="300"  >
+                                                    <GridViewColumn.HeaderContainerStyle>
+                                                        <Style TargetType="GridViewColumnHeader" >
+                                                            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                                                            <!--单列标题对齐-->
+                                                        </Style>
+                                                    </GridViewColumn.HeaderContainerStyle>
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock HorizontalAlignment="Left" Text="{Binding title}"></TextBlock>
+                                                            <!--单列内容对齐-->
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+
+                                                <GridViewColumn Header="状态" Width="80" DisplayMemberBinding="{Binding state}"/>
                                             </GridView>
                                         </ListView.View>
                                     </ListView>

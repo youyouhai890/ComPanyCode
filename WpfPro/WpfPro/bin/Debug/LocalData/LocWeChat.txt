@@ -1,1 +1,1 @@
-[{"QunMingCheng":"微信群名称(不要符号)","id":1},{"QunMingCheng":"111","id":2},{"QunMingCheng":"22","id":3}]
+[{"QunMingCheng":"A_엄마","id":1}]

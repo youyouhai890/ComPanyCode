@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -15,9 +16,6 @@ namespace WpfPro.ToolsCls
     //窗口句柄的控制
     class WinHandle
     {
-
-
-
 
         #region 窗口句柄
         ////声明 API 函数
@@ -100,15 +98,41 @@ namespace WpfPro.ToolsCls
             public string szClassName;
         }
 
+        //获取指定窗口名称,参数为要查找的窗口名
+        public static string AssignWinHwnd(string WinName)
+        {
+            IDictionary<IntPtr, string> WinHwnd = null;
 
-        //获取所有窗口
+            //获取所有窗口句柄
+            WinHwnd = GetAllDesktopWindows();
+
+            //跟名称对应的窗口句柄
+            string hwndName = string.Empty; 
+            foreach (KeyValuePair<IntPtr, string> di in WinHwnd)     //遍历类型转换
+            {
+                if (di.Value.ToString() == WinName)
+                {
+                    hwndName = di.Key.ToString();
+                    //MessageBox.Show((string)WinHwnd[va]);
+                    //MessageBox.Show(di.Key.ToString());
+                    break;
+                }
+            }
+
+            if (hwndName == "" || hwndName == null)
+            {
+                MessageBox.Show("没有获取到匹配的窗口...");
+            }
+
+            return hwndName;
+        }
+
+        //获取所有窗口句柄
         //public static List<WindowInfo> GetAllDesktopWindows()
-        public static Hashtable GetAllDesktopWindows()
+        public static IDictionary<IntPtr, string> GetAllDesktopWindows()
         {
             //用来保存窗口对象 列表
-            List<WindowInfo> wndList = new List<WindowInfo>();
-
-            Hashtable WinHwnd = new Hashtable();
+            IDictionary<IntPtr,string> WinHwnd = new Dictionary<IntPtr, string>();
 
 
             //enum all desktop windows 
@@ -126,19 +150,12 @@ namespace WpfPro.ToolsCls
                 GetWindowTextW(hWnd, sb, sb.Capacity);      //获取窗口Text,调用API 
                 wnd.szWindowName = sb.ToString();
 
-              //  if (WinHwnd.Contains(hWnd))    
-               // {
-
-                    WinHwnd.Add(hWnd,sb.ToString()); //存储句柄和名字
-               // }
-
-
+                WinHwnd.Add(hWnd,sb.ToString()); //存储句柄和名字
                 //get window class 
                 GetClassNameW(hWnd, sb, sb.Capacity);        //获取窗口类名,调用API
                 wnd.szClassName = sb.ToString();
 
                 //add it into list 
-                wndList.Add(wnd);
                 return true;
             } ,  0);
 
@@ -148,34 +165,6 @@ namespace WpfPro.ToolsCls
 
 #endregion
 
-        /////////////////////////////////////////////////////////
-        //[DllImport("*.dll")]
-        //private static extern int***(string text);
-        //注册下大漠插件到系统文件夹
-        public static string AutoRegCom(string strCmd)
-        {
-            string rInfo;
-            try
-            {
-                Process myProcess = new Process();
-                ProcessStartInfo myProcessStartInfo = new ProcessStartInfo("cmd.exe");
-                myProcessStartInfo.UseShellExecute = false;
-                myProcessStartInfo.CreateNoWindow = true;
-                myProcessStartInfo.RedirectStandardOutput = true;
-                myProcess.StartInfo = myProcessStartInfo;
-                myProcessStartInfo.Arguments = "/c " + strCmd;
-                myProcess.Start();
-                StreamReader myStreamReader = myProcess.StandardOutput;
-                rInfo = myStreamReader.ReadToEnd();
-                myProcess.Close();
-                rInfo = strCmd + "\r\n" + rInfo;
-                return rInfo;
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
 
 
 
@@ -189,11 +178,11 @@ namespace WpfPro.ToolsCls
 
 
 
-
+        //第一个参数为内容 , 第二个为窗口句柄
         public static void WeChatMainWinMsgSend(string Content,string WinName)
         {
             //参数为窗口类 , 窗口名
-            // IntPtr win = FindWindow(null, WinName);    //WeChatMainWndForPC为微信默认打开的主窗口
+            // IntPtr win = FindWindow(null, WinName);    //"WeChatMainWndForPC" 为微信默认打开的主窗口
             IntPtr win = GetStringToIntptr(WinName);
             SetForegroundWindow(win);
             System.Windows.Forms.SendKeys.SendWait(Content);
@@ -219,6 +208,16 @@ namespace WpfPro.ToolsCls
             return str;
         }
 
+        //发送微信消息 , 参数为内容 , 次数 ,句柄
+        public static void WinSendMsg(string ContTxt, int CiShu ,string HwndStr)
+        {
+            int j = 0;
+            while (j++ < CiShu)
+            {
+                Thread.Sleep(TimeSpan.FromMilliseconds(50));    //应该是间隔时间
+                WeChatMainWinMsgSend(ContTxt, HwndStr);
+            }
+        }
 
 
 

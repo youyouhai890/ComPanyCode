@@ -53,7 +53,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>WpfPro.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -72,8 +73,16 @@
       <HintPath>..\packages\Geckofx45.64.45.0.34\lib\net45\Geckofx-Winforms.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.6\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.VisualBasic.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -151,6 +160,7 @@
     <Compile Include="ManageAllCls\ManWinCls.cs" />
     <Compile Include="ManageAllCls\MyInfo.cs" />
     <Compile Include="ManageAllCls\ObserverCls.cs" />
+    <Compile Include="ManageAllCls\PramObj.cs" />
     <Compile Include="ManageAllCls\ThreadCls.cs" />
     <Compile Include="TestCode\TestCls.cs" />
     <Compile Include="ToolsCls\GetOrSetTools.cs" />
@@ -167,7 +177,6 @@
     <Compile Include="Configs\Config.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,7 +194,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Configs\Config.ini" />
     <None Include="Firefox\omni.ja" />
     <None Include="Configs\AllInfsTxt.ini" />
     <None Include="packages.config" />
@@ -202,7 +210,6 @@
     <Folder Include="DataBase\BLL\" />
     <Folder Include="DataBase\DAL\" />
     <Folder Include="DataBase\Model\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="mscoree">
@@ -226,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DLL\Common.dll" />
+    <Content Include="DLL\Microsoft.VisualBasic.dll" />
     <Content Include="DLL\Newtonsoft.Json.dll" />
     <Content Include="DLL\SQLite.Designer.dll" />
     <Content Include="DLL\SQLite.Interop.dll" />
@@ -250,6 +258,8 @@
     <Content Include="Firefox\sandboxbroker.dll" />
     <Content Include="Firefox\softokn3.dll" />
     <Content Include="Firefox\xul.dll" />
+    <Resource Include="Resource\Img1.ico" />
+    <Resource Include="Resource\HeadPict.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Forms\FormControl\MessBoxCont.xaml">

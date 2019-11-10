@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace WpfPro.HttpJsons
 {
     //序列化和反序列化
-    class SerializationTools<T>
+    class SerializationTools<T> where T :  new()
     {
 
         //序列化JSON(封装字符串),泛型为要序列化的类型
@@ -41,7 +41,7 @@ namespace WpfPro.HttpJsons
         /// <summary>
         /// ////////////////////////////////////////////////////////////////
 
-        //反序列化(解析Json返回对象),参数为Json字符串
+        //先调接口,然后返回的字符串反序列化
         public static T RevJsonObj(string JsonObj)
         {
 
@@ -50,7 +50,7 @@ namespace WpfPro.HttpJsons
             webClient.Encoding = Encoding.UTF8;
             webClient.Headers.Add("Content-Type", "application/json");
             string strRecv = webClient.DownloadString(JsonObj);
-            //检测空值
+            //替换JSON里的空值为字符串
             string mod = RegularTools.NullJsonMod(strRecv);
             T t = JsonHelper.Deserialize<T> (mod);    //返回对象,用泛型的类型转换对象
 
@@ -58,6 +58,17 @@ namespace WpfPro.HttpJsons
             return t;       //返回实体对象
 
         }
+
+        //本地字符串反序列化
+        public static T LocRevJsonObj(string JsonObj)
+        {
+
+              T  t = JsonHelper.Deserialize<T>(JsonObj);    //返回对象,用泛型的类型转换对象
+
+            return t;       //返回实体对象
+        }
+
+
 
     }
 }

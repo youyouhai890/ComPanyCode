@@ -36,6 +36,7 @@ namespace WpfPro.ToolsCls
             return res;
         }
 
+        //json里的NULL检测
         public static string  NullJsonMod(string JsonStr)
         {
             //将Json空值 :, 修改为 :"",

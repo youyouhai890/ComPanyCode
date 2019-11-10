@@ -22,17 +22,26 @@ namespace WpfPro.ManageAllCls
         public static int Thint = 1;
         public static void ThreadFunStart (Action<object> fFun,object sender){
 
+            try
+            {
+                Thread thread = new Thread(new ParameterizedThreadStart(fFun));
+                thread.Name = "WPF线程---" + Thint++;
+                // MessageBox.Show("线程-------" + thread.Name);
+                thread.IsBackground = true;//设置为后台线程，当主线程结束后，后台线程自动退出，否则不会退出程序不能结束
+                thread.Start(sender);//启动新线程
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
             Action<object> Fun = fFun;
 
-            Thread thread = new Thread(new ParameterizedThreadStart(fFun));
-            thread.Name = "WPF线程---" + Thint++;
-           // MessageBox.Show("线程-------" + thread.Name);
-            thread.IsBackground = true;//设置为后台线程，当主线程结束后，后台线程自动退出，否则不会退出程序不能结束
-            thread.Start(sender);//启动新线程
+
         }
 
 
-        //重载委托方法
+
+        //UI线程托管按钮
         public static void DelegateBIVKFun(Button but,Action<object> Fun , params object[] str)
         {
             Action action1 = () =>      //匿名方法
@@ -45,7 +54,7 @@ namespace WpfPro.ManageAllCls
         }
 
 
-        //重载委托方法
+        //重载委托方法 ,线程托管menuItem
         public static void ItemDelegateBIVKFun(MenuItem mi, Action<object> Fun)
         {
             lock (BvkObject)
@@ -54,7 +63,7 @@ namespace WpfPro.ManageAllCls
                     {
                     //创建或显示窗口
                     //ManWinCls<RegWin>.OpenOrCreatWin((string)str[0]);
-                    Fun(mi);
+                          Fun(mi);
                      };
                     mi.Dispatcher.BeginInvoke(action1);
 

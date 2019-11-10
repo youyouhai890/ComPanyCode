@@ -122,9 +122,9 @@ namespace WpfPro.ManageAllCls
         public static void ShowDialogWin(T obj)
         {
             T win = obj as T;
-            win.ShowDialog();         //模态启动
-            win.Topmost = true;         //窗口显示到最前
+          //  win.Topmost = true;         //窗口显示到最前
             win.WindowStartupLocation = WindowStartupLocation.CenterScreen; //显示到屏幕中间
+            win.ShowDialog();         //模态启动
 
         }
 

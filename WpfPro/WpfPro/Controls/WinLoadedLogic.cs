@@ -27,38 +27,9 @@ namespace WpfPro.Controls
                     //接口,方法,参数
                     AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao,
                         ButtLogic<ProductsListWin>.ShowGoodsListSuccLogic ,
-                    "", "1011", "1", "2", "15", MyInfo.GetInstance.UID);
+                    "", "1011", "1", "1", "15", MyInfo.GetInstance.UID);
 
-                    //参数1 是否测试 , 参数2 接口名,从第三个开始参数
-                    //string result = TestCls.FlagTest(AllInterfaceCls.TestFlag, ManaEnumCls.HttpInterf.ShangPinLieBiao,
-                    //   keyword, "1011", "1", "2", "15", uid);
 
-                    //字符串反序列化,泛型为Data类型
-                    //  ProdJsonObj<ProdDataModel> model = SerializationTools<ProdJsonObj<ProdDataModel>>.RevJsonObj(result);
-                    //MLoginJson<ProdDataModel> model = SerializationTools<MLoginJson<ProdDataModel>>.RevJsonObj(result);
-
-                    //if (model.code == 200)  //200为成功
-                    //{
-                    //   // MessageBox.Show(model.message);
-
-                    //    MyInfo.GetInstance.PRODLISTLIEW = model.data.list;      //保存商品列表
-
-                    //    List<ProdListModel> viewList = model.data.list;
-
-                    //    Wind.PlistView.ItemsSource = viewList;       //显示到ListView
-
-                    //}
-                    //else if (model.code == 500) //设置PID
-                    //{
-
-                    //    MessageBox.Show("自动跳转到设置PID的页面.");
-                    //    Wind.TabItem2.IsSelected = true;    //选择第二个子菜单
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show(model.message);
-                    //    return;
-                    //}
                 };
                 Wind.Dispatcher.BeginInvoke(action1);
             }
@@ -70,34 +41,67 @@ namespace WpfPro.Controls
 
         }
 
-      
+        //产品列表显示逻辑
+        public static void LoadLocDataLogic(object win)
+        {
+            try
+            {
+                ProductsListWin Wind = (ProductsListWin)win;
+                Action action1 = () =>      //匿名方法
+                {
+                    //获取本地数据
+                    Wind.AddListView.ItemsSource = MyInfo.GetInstance.GenfaList;  //跟发列表显示
+                    Wind.WClistView.ItemsSource = MyInfo.GetInstance.WeChatList;  //微信群列表显示
 
+                };
+                Wind.Dispatcher.BeginInvoke(action1);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+
+        
+        //模版配置
         public static void ReadTemplLogic(object obj) {
 
-            //获取配置文件路径
-            string PathConfig = PathTools.DebugConf;
+            ProductsListWin pwin = (ProductsListWin)obj;
+            try
+            {
+                Action action1 = () =>      //匿名方法
+                {
+                    //获取配置文件路径
+                    string PathConfig = PathTools.DebugConf;
+                    string TextCont1 = string.Empty; //存储读取后的内容
+                    string TempPath1 = PathConfig + "Template_1.txt";
+                    //获取模板内容,如果模板不存在则重新创建
+                    TextCont1 = IOTools.WRTemp(TempPath1, TextCont1);
+                    //往模板里1显示内容
+                    //ShowTools.ShowRichTextBox(pwin.PrichTextBox, TextCont1);
+                    ShowTools.ShowTextBox(pwin.StextBox2, TextCont1);        //显示到TexBox
 
-            ProductsListWin pwin = obj as ProductsListWin;
 
-            string TextCont1 = string.Empty; //存储读取后的内容
-            //模板路径
-            string TempPath1 = PathConfig + "Template_1.txt";
-            //获取模板内容,如果模板不存在则重新创建
-            TextCont1 = IOTools.WRTemp(TempPath1, TextCont1);
-            //往模板里1显示内容
-            //ShowTools.ShowRichTextBox(pwin.PrichTextBox, TextCont1);
-            ShowTools.ShowTextBox(pwin.StextBox2,TextCont1);        //显示到TexBox
 
-            string TextCont2 = string.Empty; //存储读取后的内容
-            //模板路径
-            string TempPath2 = PathConfig + "Template_2.txt";
-            //获取模板内容,如果模板不存在则重新创建
-            TextCont2 = IOTools.WRTemp(TempPath2, TextCont2);
+                    string TextCont2 = string.Empty; //存储读取后的内容
+                    string TempPath2 = PathConfig + "Template_2.txt";
+                    //获取模板内容,如果模板不存在则重新创建
+                    TextCont2 = IOTools.WRTemp(TempPath2, TextCont2);
+                    //往模板2里显示内容
+                    //ShowTools.ShowRichTextBox(pwin.PrichTextBox2, TextCont2);
+                    ShowTools.ShowTextBox(pwin.StextBox3, TextCont2);        //显示到TexBox
+                };
+                pwin.Dispatcher.BeginInvoke(action1);
+            }
+            catch (Exception ex)
+            {
 
-            //往模板2里显示内容
-            //ShowTools.ShowRichTextBox(pwin.PrichTextBox2, TextCont2);
-            ShowTools.ShowTextBox(pwin.StextBox3, TextCont2);        //显示到TexBox
-
+                throw ex;
+            }
 
         }
 

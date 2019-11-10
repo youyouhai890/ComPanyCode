@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dll/common.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dll/microsoft.visualbasic.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dll/newtonsoft.json.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dll/sqlite.designer.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dll/sqlite.interop.dll")]

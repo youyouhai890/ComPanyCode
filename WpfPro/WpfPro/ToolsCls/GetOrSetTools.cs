@@ -16,7 +16,8 @@ namespace WpfPro.ToolsCls
     //类型参数必须具有无参数的公共构造函数。当与其他约束一起使用时，new() 约束必须最后指定。
     class GetOrSetTools<T> where T : Window, new()
     {
-        private static readonly object GetSockObject = new object();
+
+#region 自动匹配ListView匹配的字段内容
 
 
         //处理转链后的对象 , 第一个为替换的模版内容 ,  参数2替换的对象
@@ -24,6 +25,7 @@ namespace WpfPro.ToolsCls
         {
             //字符串
             string Content = TempTxt.Trim();
+             Content = RegularTools.NullJsonMod(Content); //检测空值
 
             //获取对象属性
             IDictionary<string,object> ObjNamVal= GetAllVariable(obj);
@@ -44,25 +46,11 @@ namespace WpfPro.ToolsCls
         {
             //字符串
             string Content = TempTxt.Trim();
+            Content = RegularTools.NullJsonMod(Content); //检测空值
+
             //获取对象属性
             IDictionary<string, object> ObjNamVal = GetAllVariable(obj);
-            //转换格式{xxx},yyy
-            //遍历键值对, 获取对象的所有变量名和值 , key变量名称 , val变量值
 
-
-            //for (int i = 0; i < ObjNamVal.Count; i++)
-            //{
-            //    if (null == ObjNamVal.Values.ToString().Trim()) //检测空值,要不然报错
-            //    {
-            //        val = "";
-            //    }
-            //    else
-            //    {
-            //        val = ObjNamVal.Values.ToString().Trim();
-            //    }
-            //    //替换占位符{}里面的内容
-            //    Content = GetStrReplace(Content, "{" + ObjNamVal.Keys + "}".Trim(), val);
-            //}
 
             for(int count = 0; count < ObjNamVal.Count; count++)
             {
@@ -74,17 +62,15 @@ namespace WpfPro.ToolsCls
 
             }
 
-
-            //foreach (KeyValuePair<string, object> item in ObjNamVal)
-            //{
-
-            //}
-
             return Content.Trim();
 
         }
 
+#endregion
 
+
+
+#region 遍历对象的所有属性
 
 
 
@@ -106,11 +92,10 @@ namespace WpfPro.ToolsCls
             }
 
              return dic;
-
         }
 
 
-        //重载方法
+//重载方法
         public static IDictionary<string, object> GetAllVariable(ProdListModel obj)
         {
 
@@ -130,16 +115,36 @@ namespace WpfPro.ToolsCls
             return dic;
         }
 
+        //重载方法(泛型)
+        public static IDictionary<object, object> GetAllVariable(T obj)
+        {
 
+            T tdm = obj as T;
+            IDictionary<object, object> dic = new Dictionary<object, object>();
+
+            StringBuilder msg = new StringBuilder();
+            //T entity = new T();
+
+            //遍历对象所有属性
+            foreach (PropertyInfo p in tdm.GetType().GetProperties())
+            {
+                dic.Add(p.Name, p.GetValue(tdm));//获取变量名和变量的值
+                //msg.AppendFormat("{0},{1}", p.Name, p.GetValue(tdm));
+            }
+
+            return dic;
+        }
+
+#endregion
 
 
         //获取默认模版 , 对应对象 , 默认模版ID
-        public static string GetDefTemp(ListView obj)
+        public static string GetDefTemp()
         {
             string DeFTempl = MyInfo.GetInstance.MYTEMPLATE; //默认模版ID
-            ListView lv = obj;
-            Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
-            ProductsListWin pwin = (ProductsListWin)targetWindow;		//窗口类型转换
+            //ListView lv = obj;
+            //Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
+            //ProductsListWin pwin = (ProductsListWin)targetWindow;		//窗口类型转换
 
             //获取配置文件路径
             string PathConfig = PathTools.DebugConf;
@@ -165,57 +170,19 @@ namespace WpfPro.ToolsCls
         }
 
 
+ #region 替换占位符对应字符串
         //参数1为字符串 , 2占位符,3要替换的内容
-        public static string GetStrReplace(string cont, string PlacStr,string RepStr)
+        public static string GetStrReplace(string cont, string PlacStr, string RepStr)
         {
             cont = cont.Replace(PlacStr, RepStr);  //电话
             return cont;
 
         }
-
-        //试试这个
-        private string GetHtmlData(string html)
-        {
-            String nativeHTMLString =
-                @"Version:0.9
-                StartHTML:<<<<<<<1
-                EndHTML:<<<<<<<2
-                StartFragment:<<<<<<<3
-                EndFragment:<<<<<<<4
-                StartSelection:<<<<<<<3
-                EndSelection:<<<<<<<4
-                <!DOCTYPE>
-                <HTML>
-                <HEAD>
-                <TITLE> The HTML Clipboard and special characters</TITLE>
-                </HEAD>
-                <BODY>
-                <UL>
-                <!--StartFragment -->
-                <myhtml>
-                <!--EndFragment -->
-                </UL>
-                </BODY>
-                </HTML>";
-
-            string utf8EncodedHTMLString
-            = Encoding.GetEncoding(0).GetString(Encoding.UTF8.GetBytes(nativeHTMLString.Replace("<myhtml>", html)));
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append(utf8EncodedHTMLString);
-            sb.Replace("<<<<<<<1",
-            (utf8EncodedHTMLString.IndexOf("<HTML>") + "<HTML>".Length).ToString("D8"));
-            sb.Replace("<<<<<<<2",
-            (utf8EncodedHTMLString.IndexOf("</HTML>")).ToString("D8"));
-            sb.Replace("<<<<<<<3",
-            (utf8EncodedHTMLString.IndexOf("<!--StartFragment -->") + "<!--StartFragment -->".Length).ToString("D8"));
-            sb.Replace("<<<<<<<4",
-            (utf8EncodedHTMLString.IndexOf("<!--EndFragment -->")).ToString("D8"));
-            return sb.ToString();
-        }
+ #endregion
 
 
 
+ #region 获取指定控件的窗体
         //获取指定控件的窗体
         public static T GetParentWin(object obj)
         {
@@ -228,15 +195,16 @@ namespace WpfPro.ToolsCls
 
         public static T GetItemParentWin(object mi)
         {
-            lock (GetSockObject)
-            {
+
                 MenuItem CurrObj = mi as MenuItem;
                 Window targetWindow = Window.GetWindow(CurrObj); //通过控件找窗体
                 T Win = targetWindow as T;      //类型转换
-
                 return Win;
-            }
+            
         }
+ #endregion
+
+
 
     }
 }

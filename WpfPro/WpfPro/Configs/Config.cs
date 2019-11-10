@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.IO;
 using WpfPro.ManageAllCls;
 using WpfPro.ToolsCls;
+using WpfPro.HttpJsons;
+using WpfPro.Local.LocalModel;
 
 namespace WpfPro.Configs
 {
@@ -55,9 +57,10 @@ namespace WpfPro.Configs
         {
             GetDeFineTempl(); //默认模板
             HttpInfConfPath = PathTools.HttpInfPath; //把接口文件拷贝到cofnig里
-            HttpJsons.AllInterfaceCls.InitInfs(HttpInfConfPath);   //初始化接口
+            AllInterfaceCls.InitInfs(HttpInfConfPath);   //初始化接口
 
-           // DataBaseConfig.ReadConfig();  //初始化数据库连接
+            //读取本地数据
+            CofLocalData();
         }
 
 
@@ -102,10 +105,36 @@ namespace WpfPro.Configs
                        @" ★二合一链接{tkl}" + Environment.NewLine +          //TurnDataModel
                        @" ★短链接{shortLink}" + Environment.NewLine;       //TurnDataModel
 
-
             return TempText;
         }
 
+        //读取本地数据
+        public static void CofLocalData()
+        {
+            string gf = string.Empty;
+                gf=IOTools.WRLoc(PathTools.LocalDataGenFaFile);    //跟发
+            if (gf==null || gf=="")
+            {
+                MyInfo.GetInstance.GenfaList = new List<GenFaMoel>();//如果没有数据初始化
+            }
+            else
+            {
+                 MyInfo.GetInstance.GenfaList = SerializationTools<List<GenFaMoel>>.LocRevJsonObj(gf); //读取跟发列表
+            }
+
+
+            string wx = string.Empty;
+            wx = IOTools.WRLoc(PathTools.LocalDataWeChatFile);   //微信群
+            if (wx==null || wx=="")     
+            {
+                MyInfo.GetInstance.WeChatList = new List<WeChatModel>();    //如果没有数据初始化
+            }
+            else
+            {
+                MyInfo.GetInstance.WeChatList = SerializationTools<List<WeChatModel>>.LocRevJsonObj(wx); //读取微信群列表
+            }
+
+        }
 
 
 
