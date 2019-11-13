@@ -80,11 +80,11 @@ namespace WpfPro.Configs
             {
                 //读取内容
                 ToolsCls.IOTools.WriteFile(DfiFilePath, "1");
-                MyInfo.GetInstance.MYTEMPLATE = ToolsCls.IOTools.ReadFile(DfiFilePath); //保存默认模板信息到我的数据里
+                MyInfo<object>.GetInstance.MYTEMPLATE = ToolsCls.IOTools.ReadFile(DfiFilePath); //保存默认模板信息到我的数据里
             }
             else
             {
-                MyInfo.GetInstance.MYTEMPLATE = ToolsCls.IOTools.ReadFile(DfiFilePath); //如果已存在直接读取
+                MyInfo<object>.GetInstance.MYTEMPLATE = ToolsCls.IOTools.ReadFile(DfiFilePath); //如果已存在直接读取
             }
 
         }
@@ -115,11 +115,11 @@ namespace WpfPro.Configs
                 gf=IOTools.WRLoc(PathTools.LocalDataGenFaFile);    //跟发
             if (gf==null || gf=="")
             {
-                MyInfo.GetInstance.GenfaList = new List<GenFaMoel>();//如果没有数据初始化
+                MyInfo<object>.GetInstance.GenfaList = new List<GenFaMoel>();//如果没有数据初始化
             }
             else
             {
-                 MyInfo.GetInstance.GenfaList = SerializationTools<List<GenFaMoel>>.LocRevJsonObj(gf); //读取跟发列表
+                 MyInfo<object>.GetInstance.GenfaList = SerializationTools<List<GenFaMoel>>.LocRevJsonObj(gf); //读取跟发列表
             }
 
 
@@ -127,11 +127,11 @@ namespace WpfPro.Configs
             wx = IOTools.WRLoc(PathTools.LocalDataWeChatFile);   //微信群
             if (wx==null || wx=="")     
             {
-                MyInfo.GetInstance.WeChatList = new List<WeChatModel>();    //如果没有数据初始化
+                MyInfo<object>.GetInstance.WeChatList = new List<WeChatModel>();    //如果没有数据初始化
             }
             else
             {
-                MyInfo.GetInstance.WeChatList = SerializationTools<List<WeChatModel>>.LocRevJsonObj(wx); //读取微信群列表
+                MyInfo<object>.GetInstance.WeChatList = SerializationTools<List<WeChatModel>>.LocRevJsonObj(wx); //读取微信群列表
             }
 
         }

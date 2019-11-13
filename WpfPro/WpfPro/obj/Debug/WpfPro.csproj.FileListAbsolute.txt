@@ -119,6 +119,6 @@ D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.Properties.Resources.resources
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csproj.GenerateResource.Cache
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.exe
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.pdb
-D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.VisualStudio.VSHelp.dll
-D:\ComPanyCode\WpfPro\WpfPro\bin\Debug\Microsoft.MSXML.dll
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csprojResolveAssemblyReference.cache
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.g.cs
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.baml

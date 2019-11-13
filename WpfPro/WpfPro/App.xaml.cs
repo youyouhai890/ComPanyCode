@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WpfPro.Configs;
 using WpfPro.Forms.LoginDir;
+using WpfPro.Forms.TestForm;
 using WpfPro.ManageAllCls;
 
 namespace WpfPro
@@ -28,19 +29,32 @@ namespace WpfPro
         {
             //托盘显示
          //   _KeyIco = (TaskbarIcon)FindResource("KeyIco");
-
+          EnvirInit();   //启动环境
 
             Process instance = RunningInstance();
             if (instance == null)   //检测是否为第一次启动
             {
+                try
+                {
 
-                EnvirInit();   //启动环境
-                // Application app = new Application();        //创建application对象
-                LoginInputWin LogInp = new LoginInputWin();        //作为主窗口启动
-                LogInp.Title = "Login";        //窗口标题
-                //ManWinCls<LoginInputWin>.OpenOrCreatWin("LoginInputWinForm");
-                ManWinCls<LoginInputWin>.ShowDialogWin(LogInp);
-                 //ManWinCls<LoginInputWin>.ShowWin(LogInp);
+                    // Application app = new Application();        //创建application对象
+                    LoginInputWin LogInp = new LoginInputWin();        //作为主窗口启动
+                    LogInp.Title = "Login";
+                    //窗口标题
+                    ManWinCls<LoginInputWin>.ShowDialogWin(LogInp);
+                    //ManWinCls<LoginInputWin>.ShowWin(LogInp);
+
+
+                    //用于测试
+                    //TestWin tw = new TestWin();
+                    //ManWinCls<TestWin>.ShowDialogWin(tw);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }  
+
             }
             else
             {
@@ -138,8 +152,11 @@ namespace WpfPro
             /// </summary> 
             public static void HandleRunningInstance(Process instance)
             {
-                ShowWindowAsync(instance.MainWindowHandle, WS_SHOWNORMAL); //显示，可以注释掉 
-                SetForegroundWindow(instance.MainWindowHandle);            //放到前端 
+               MessageBox.Show("已经运行一个实例现在关闭");
+                instance.Kill();
+            //App.Current.Shutdown();
+               // ShowWindowAsync(instance.MainWindowHandle, WS_SHOWNORMAL); //显示，可以注释掉 
+               // SetForegroundWindow(instance.MainWindowHandle);            //放到前端 
             }
 
             static void EnvirInit()

@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WpfPro.Forms.Products;
+using WpfPro.HttpJsons;
 using WpfPro.HttpJsons.JsonModel;
 using WpfPro.ManageAllCls;
 
 namespace WpfPro.ToolsCls
 {
     //类型参数必须具有无参数的公共构造函数。当与其他约束一起使用时，new() 约束必须最后指定。
-    class GetOrSetTools<T> where T : Window, new()
+    class GetOrSetTools<T> where T : class, new()
     {
 
-#region 自动匹配ListView匹配的字段内容
+#region 自动匹配模板内容字段
 
 
         //处理转链后的对象 , 第一个为替换的模版内容 ,  参数2替换的对象
-        public static string GetAssocaObj( string TempTxt, TurnDataModel obj)
+        public static string GetAssocaObj( string TempTxt, T obj)
         {
             //字符串
             string Content = TempTxt.Trim();
@@ -41,107 +42,19 @@ namespace WpfPro.ToolsCls
 
         }
 
-        //重载方法,遍历显示对象
-        public static string GetAssocaObj(string TempTxt, ProdListModel obj)
-        {
-            //字符串
-            string Content = TempTxt.Trim();
-            Content = RegularTools.NullJsonMod(Content); //检测空值
-
-            //获取对象属性
-            IDictionary<string, object> ObjNamVal = GetAllVariable(obj);
 
 
-            for(int count = 0; count < ObjNamVal.Count; count++)
-            {
-                var element = ObjNamVal.ElementAt(count);
-                string Key = element.Key;
-                string val = Convert.ToString(element.Value) ;
-
-                Content = GetStrReplace(Content, "{" + Key + "}".Trim(), val);
-
-            }
-
-            return Content.Trim();
-
-        }
-
+        
 #endregion
 
 
 
-#region 遍历对象的所有属性
-
-
-
-        //遍历对象所有属性
-        public static IDictionary<string, object> GetAllVariable(TurnDataModel obj)
-        {
-            
-            TurnDataModel tdm = obj as TurnDataModel;
-            IDictionary<string,object> dic = new Dictionary<string, object>();
-
-            StringBuilder msg = new StringBuilder();
-            //T entity = new T();
-
-            //遍历对象所有属性
-            foreach (PropertyInfo p in tdm.GetType().GetProperties())
-            {
-                dic.Add(p.Name, p.GetValue(tdm));//变量名和变量的值
-                //msg.AppendFormat("{0},{1}", p.Name, p.GetValue(tdm));
-            }
-
-             return dic;
-        }
-
-
-//重载方法
-        public static IDictionary<string, object> GetAllVariable(ProdListModel obj)
-        {
-
-            ProdListModel tdm = obj as ProdListModel;
-            IDictionary<string, object> dic = new Dictionary<string, object>();
-
-            StringBuilder msg = new StringBuilder();
-            //T entity = new T();
-
-            //遍历对象所有属性
-            foreach (PropertyInfo p in tdm.GetType().GetProperties())
-            {
-                dic.Add(p.Name, p.GetValue(tdm));//变量名和变量的值
-                //msg.AppendFormat("{0},{1}", p.Name, p.GetValue(tdm));
-            }
-
-            return dic;
-        }
-
-        //重载方法(泛型)
-        public static IDictionary<object, object> GetAllVariable(T obj)
-        {
-
-            T tdm = obj as T;
-            IDictionary<object, object> dic = new Dictionary<object, object>();
-
-            StringBuilder msg = new StringBuilder();
-            //T entity = new T();
-
-            //遍历对象所有属性
-            foreach (PropertyInfo p in tdm.GetType().GetProperties())
-            {
-                dic.Add(p.Name, p.GetValue(tdm));//获取变量名和变量的值
-                //msg.AppendFormat("{0},{1}", p.Name, p.GetValue(tdm));
-            }
-
-            return dic;
-        }
-
-#endregion
 
 
         //获取默认模版 , 对应对象 , 默认模版ID
         public static string GetDefTemp()
         {
-            string DeFTempl = MyInfo.GetInstance.MYTEMPLATE; //默认模版ID
+            string DeFTempl = MyInfo<object>.GetInstance.MYTEMPLATE; //默认模版ID
             //ListView lv = obj;
             //Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
             //ProductsListWin pwin = (ProductsListWin)targetWindow;		//窗口类型转换
@@ -202,8 +115,168 @@ namespace WpfPro.ToolsCls
                 return Win;
             
         }
- #endregion
+        #endregion
 
+
+
+#region 反射部分,
+
+        //利用反射来创建对象(用字符串类型创建对象)
+        public static T ReflectCreatObj(string TypeName)
+        {
+            //注意类型名称必须是全名 , 包含命名空间
+            Type type = Type.GetType(TypeName);
+            dynamic obj = Activator.CreateInstance(type,true);  //返回object对象
+
+            return (T)obj;
+        }
+
+
+
+        //遍历对象所有属性
+        public static IDictionary<string, object> GetAllVariable(T obj)
+        {
+
+            T tdm = obj as T;
+            IDictionary<string, object> dic = new Dictionary<string, object>();
+
+            StringBuilder msg = new StringBuilder();
+            //T entity = new T();
+
+            //遍历对象所有属性
+            foreach (PropertyInfo p in tdm.GetType().GetProperties())
+            {
+                if (p.GetValue(tdm) == null)
+                {
+                    dic.Add(p.Name, "");//变量名和变量的值
+
+                }
+                else
+                {
+                    dic.Add(p.Name, p.GetValue(tdm));//变量名和变量的值
+                }
+                //msg.AppendFormat("{0},{1}", p.Name, p.GetValue(tdm));
+            }
+
+            return dic;
+        }
+
+
+
+
+        //反射获取变量名称和值,判断变量类型
+
+        public static void ReflectGetNameOrVal(T obj,T obj2)
+        {
+            // T RObj = ReflectCreatObj(obj.GetType().ToString());  //用某个对象的类型来,反射实例化
+
+            string values = string.Empty;
+            foreach (PropertyInfo p in obj.GetType().GetProperties())
+            {
+                if (p.PropertyType == typeof(string))   //判断类型
+                {
+                    values += string.Format("{0}='{1}', ", p.Name, p.GetValue(obj));
+                    p.SetValue(obj2, Convert.ChangeType(p.GetValue(obj), p.PropertyType),null);   // Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+                }
+                if (p.PropertyType == typeof(int)|| p.PropertyType == typeof(uint))  //判断类型
+                {
+                    values += string.Format("{0}={1},", p.Name, p.GetValue(obj));
+                    p.SetValue(obj2, Convert.ChangeType(p.GetValue(obj), p.PropertyType), null);   //Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+
+                }
+                if (p.PropertyType == typeof(decimal) || p.PropertyType == typeof(double)|| p.PropertyType == typeof(float))
+                {
+                    values += string.Format("{0}={1}, ", p.Name, p.GetValue(obj));
+                    p.SetValue(obj2, Convert.ChangeType(p.GetValue(obj), p.PropertyType), null);   // Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+
+                }
+                if (p.PropertyType == typeof(bool))
+                {
+                    values += string.Format("{0}={1}, ", p.Name, p.GetValue(obj));
+                    p.SetValue(obj2, Convert.ChangeType(p.GetValue(obj), p.PropertyType), null);   //Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+
+                }
+                if (p.PropertyType == typeof(long) || p.PropertyType == typeof(ulong))
+                {
+                    values += string.Format("{0}={1}, ", p.Name, p.GetValue(obj));
+                }
+                if (p.PropertyType == typeof(DateTime))
+                {
+                    values += string.Format("{0}='{1}', ", p.Name, p.GetValue(obj));
+                }
+
+                if (p.PropertyType == typeof(sbyte))
+                {
+                    values += string.Format("{0}={1}, ", p.Name, p.GetValue(obj));
+                }
+                if (p.PropertyType == typeof(byte) || p.PropertyType == typeof(short) || p.PropertyType == typeof(ushort))
+                {
+                    values += string.Format("{0}={1}, ", p.Name, p.GetValue(obj));
+                }
+
+                values += string.Format("{0}={1},", p.Name, p.GetValue(obj));
+                Console.WriteLine("Name:{0} Value:{1}", p.Name, p.GetValue(obj));
+            }
+
+        }
+
+
+        //合并对象的数据
+        public static T ReflectMergeData(T obj1, T obj2)
+        {
+            //要存储数据的新对象
+              T RObj = ReflectCreatObj(obj1.GetType().ToString()); //用某个对象的类型来,反射实例化
+
+            //Type type = typeof(T);
+           // PropertyInfo[] pi = type.GetProperties();
+           //同上
+            PropertyInfo[] p0 = typeof(T).GetProperties();  //获取没有实例化的属性集合(没有值)
+
+            PropertyInfo[] p1 =  obj1.GetType().GetProperties();     //获取已经实例化的属性集合(带有值)
+            PropertyInfo[] p2 =  obj2.GetType().GetProperties();     //获取已经实例化的属性集合(带有值)
+
+
+            for (int i = 0; i < p1.Length; i++)
+            {
+                var val = p1[i].GetValue(obj1); //遍历第一个对象的所有值
+
+                //第一个对象的值为空时,获取第二个对象的值
+                    if (val == null|| val.ToString().Trim() == "" || val.ToString().Trim() == "0" ||  val.ToString().Trim() == "0.0")       //如果第一个对象的属性(变量)为空时,用第二个属性值
+                    {
+                        //如果值为空将第二个对象的值p2[i].GetValue(obj2)赋给对象一 , RObj为被赋值的对象
+                        p0[i].SetValue(RObj, Convert.ChangeType(p2[i].GetValue(obj2), p2[i].PropertyType), null);   // Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+                    }
+                    else
+                    {
+                        p0[i].SetValue(RObj, Convert.ChangeType(p1[i].GetValue(obj1), p1[i].PropertyType), null);   // Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+                    }
+
+            }
+
+            return RObj;          //返回的应该是序列化的字符串
+        }
+
+
+
+
+        //克隆对象,第二个为被克隆的对象
+        public static void ReflectCloneObj(T obj1, T obj2)
+        {
+
+
+            PropertyInfo[] p1 = obj1.GetType().GetProperties();     //获取已经实例化的属性集合(带有值)
+            PropertyInfo[] p2 = obj1.GetType().GetProperties();     //获取已经实例化的属性集合(带有值)
+
+
+            for (int i = 0; i < p1.Length; i++)
+            {
+                var val = p1[i].GetValue(obj1); //遍历第一个对象的所有值
+                p1[i].SetValue(obj2, Convert.ChangeType(val, p1[i].PropertyType), null);   // Convert.ChangeType(p.GetValue(obj), p.PropertyType),应该是把值转换为指定类型
+            }
+
+        }
+
+        #endregion
 
 
     }

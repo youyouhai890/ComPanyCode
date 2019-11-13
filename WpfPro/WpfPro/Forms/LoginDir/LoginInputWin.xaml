@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfPro.Forms.LoginDir"
         mc:Ignorable="d"
-        Title="Login" Height="335" Width="420">
+        Title="Login" Height="335" Width="420" Closing="LoginInputWinForm_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="19*"/>

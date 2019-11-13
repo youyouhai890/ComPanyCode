@@ -7,52 +7,32 @@ using System.Threading.Tasks;
 using WpfPro.HttpJsons;
 using WpfPro.HttpJsons.JsonModel;
 using WpfPro.ManageAllCls;
+using WpfPro.ToolsCls;
 
 namespace WpfPro.Local.LocalModel
 {
     [DataContract]
-    class GenFaMoel
+    class GenFaMoel : TurnListModel
     {
-        [DataMember]
-        public TurnDataModel TDObj { get; set; } = new TurnDataModel();      //包装的数据,从这里获取信息
 
         //下面都是往Listview显示数据的部分
-        int GfId = MyInfo.GetInstance.GenfaList.Count+1;
+        int GfId = MyInfo<object>.GetInstance.GenfaList.Count+1;
         [DataMember]
-        public int id { get; set; } = 0;
-        [DataMember]
-        public string time { get; set; } = "";
-        [DataMember]
-        public string title { get; set; } = "";
-        [DataMember]
-        public string state { get; set; } = "";
-
-
-        /// ///////////////////////////////////////////////
-        [DataMember]
-        public string tkl { get; set; } = "";                 //淘口令,二合一链接
-        [DataMember]
-        public string shortLink { get; set; } = "";           //短链接
-        [DataMember]
-        public string longLink { get; set; } = "";            //长链接
-        [DataMember]
-        public object couponAmount { get; set; } = "";       //劵金额,劵面额
-        [DataMember]
-        public string clickUrl { get; set; } = "";            //应该是点击的url图片地址
-        [DataMember]
-        public string maxCommissionRate { get; set; } = "";      //佣金比例
+        public string gid { get; set; } = "";                
+     
+        public  GenFaMoel() { }
 
         //构造函数
-        public GenFaMoel(TurnDataModel obj)
+        public GenFaMoel(TurnListModel tm)
         {
-            
-            this.id = GfId;
-            this.time = obj.createTime;
-            this.title = obj.title;
-            this.state = "未发送";
+            //基类的属性
+            this.gid = GfId.ToString().Trim();     //用继承的属性
+            base.state = "未发送";
 
-            TDObj = obj;
-            MyInfo.GetInstance.GenfaList.Add(this);     //自动关联对象
+
+            //克隆对象的值,第二个为被克隆的对象
+            GetOrSetTools<TurnListModel>.ReflectCloneObj(tm, this);
+           MyInfo<object>.GetInstance.GenfaList.Add(this);     //自动关联对象
         }
 
     }

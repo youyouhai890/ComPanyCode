@@ -1,18 +1,11 @@
-﻿using Gecko;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms.Integration;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WpfPro.Forms.LoginDir;
 using WpfPro.Forms.Products;
@@ -22,6 +15,7 @@ using WpfPro.Local.LocalModel;
 using WpfPro.ManageAllCls;
 using WpfPro.TestCode;
 using WpfPro.ToolsCls;
+using WpfPro.HttpJsons.WeChat;
 using static WpfPro.ManageAllCls.ManaEnumCls;
 
 
@@ -204,8 +198,8 @@ namespace WpfPro.Controls
 
         }
 
-
-        public static void RReg_ButtLogic(RegWin rgw)     //注册的逻辑
+        //注册的逻辑
+        public static void RReg_ButtLogic(RegWin rgw)     
         {
             string PhoneId = rgw.RUID.Text.Trim();       //注册页的手机号
             string Pwd = rgw.RUPASS.Text.Trim();     //注册页的密码
@@ -298,12 +292,13 @@ namespace WpfPro.Controls
             {
 
                 //保存个人账号
-                MyInfo.GetInstance.PHONE = PhoneId;
+                MyInfo<object>.GetInstance.PHONE = PhoneId;
 
-                ManWinCls<LoginInputWin>.HideWin(lgw);
-                MyInfo.GetInstance.UID = model.data;  //保存UID
+                ManWinCls<LoginInputWin>.HideWin("LoginInputWinForm");  //隐藏窗口
 
-                string uid = MyInfo.GetInstance.UID;
+                MyInfo<object>.GetInstance.UID = model.data;  //保存UID
+
+                string uid = MyInfo<object>.GetInstance.UID;
 
                 //查询PID
                 //参数1 是否测试 , 参数2 接口名,从第三个开始参数
@@ -315,15 +310,17 @@ namespace WpfPro.Controls
 
                 if (model2.code == 200)      //成功
                 {
-                    MyInfo.GetInstance.PID = model2.data;  //保存PID
+                    MyInfo<object>.GetInstance.PID = model2.data;  //保存PID
                 }
                 else
                 {
                     MessageBox.Show(model2.message);
                 }
+
+                
                 //显示对应窗口
                 ProductsListWin plw = new ProductsListWin();
-                plw.StextBox.Text = MyInfo.GetInstance.PID;
+                plw.StextBox.Text = MyInfo<object>.GetInstance.PID;
                 ManWinCls<ProductsListWin>.ShowDialogWin(plw);  //模态启动
                 //ManWinCls<ProductsListWin>.ShowWin(plw);
 
@@ -346,7 +343,7 @@ namespace WpfPro.Controls
         public static void ShouQuan()
         {
 
-            string pid = MyInfo.GetInstance.PID;
+            string pid = MyInfo<object>.GetInstance.PID;
 
             string AuthoPid = RegularTools.IsPid(pid);  //截取PID的第一个字符
 
@@ -354,7 +351,7 @@ namespace WpfPro.Controls
             string result = TestCls.FlagTest(AllInterfaceCls.TestFlag, ManaEnumCls.HttpInterf.SouQuan, AuthoPid + "@" + AuthoPid);
 
             // 显示授权网页
-            ManageAllCls.ManWinCls<ProductsListWin>.FixWebPage(result);
+            ManWinCls<ProductsListWin>.FixWebPage(result);
 
         }
 
@@ -371,7 +368,7 @@ namespace WpfPro.Controls
 
                 //  MessageBox.Show(VisualTreeHelper.GetParent(CurrButt).ToString()); //获取父对象
                 //string uid = "8a2efddc6db8c7cb016db9627fed07ec";
-                string uid = MyInfo.GetInstance.UID;
+                string uid = MyInfo<object>.GetInstance.UID;
 
                 string pid = pwin.StextBox.Text.Trim();
 
@@ -407,7 +404,6 @@ namespace WpfPro.Controls
                 MessageBox.Show("获取不到当前控件信息");
             }
 
-
         }
 
 
@@ -421,9 +417,9 @@ namespace WpfPro.Controls
 
             // ListView lv = sender as ListView;
            //  ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
-            ProdListModel emp = MyInfo.GetInstance.CurrPmObj;
+            TurnListModel emp = MyInfo<object>.GetInstance.CurrPmObj;        //获取选中对象
 
-            string uid = MyInfo.GetInstance.UID;
+            string uid = MyInfo<object>.GetInstance.UID;
 
             //接口参数
             ParmObj poj = new ParmObj(7);
@@ -434,27 +430,24 @@ namespace WpfPro.Controls
             poj.ParmStrArray[4] = emp.pictUrl;
             poj.ParmStrArray[5] = emp.title;
             poj.ParmStrArray[6] = emp.zkPrice;
+            
 
-
-            //接口,方法,参数
-            MLoginJson<TurnDataModel> model = AbsInterfaces<TurnDataModel>.AppInfFun2(HttpInterf.ZhuanLianJieKou,
+            //接口,方法,参数 , 返回从接口获取到的数据模型
+            MLoginJson<TurnListModel> model = AbsInterfaces<TurnListModel>.AppInfFun2(HttpInterf.ZhuanLianJieKou,
                                                     poj.ParmStrArray);
 
             if (emp != null && emp is ProdListModel)
                 {
                     if (model.code == 200)       //授权成功状态
                     {
+
+                         //合并数据
+                        TurnListModel tlm =  GetOrSetTools<TurnListModel>.ReflectMergeData(model.data, emp);
                         //参数
-                        ParmObj pj2 = new ParmObj(2);
-
-                    pj2.ParmArray[0] = emp;         //ProdListModel对象
-                    pj2.ParmArray[1] = model.data;      //TurnDataModel对象
-
-                    //MessageBox.Show("成功授权"),第一个为视图显示的列,第二个为转链后获取的对象
-                    //TurnToCopyLogic(lv, emp, model.data); //成功授权才能,转链窗口
-                    fun(pj2.ParmArray);
-                    //TurnOrWeChatFun(lv, emp, model.data); 
-                    }
+                        ParmObj pj1 = new ParmObj(1);
+                        pj1.ParmArray[0] = tlm;      //TurnListModel对象
+                        fun(pj1.ParmArray);
+                     }
                     else if (model.code == 3023)        //授权过期
                     {
 
@@ -485,17 +478,17 @@ namespace WpfPro.Controls
                     Window targetWindow = Window.GetWindow(lv); //通过控件找窗体
                     ProductsListWin plw = targetWindow as ProductsListWin;      //窗体类型转换
 
-                    ProdListModel emp = lv.SelectedItem as ProdListModel;   //获取选中对象
-                    MyInfo.GetInstance.CurrPmObj = emp;     //保存当前对象
+                    TurnListModel emp = lv.SelectedItem as TurnListModel;   //获取选中对象(原型数据)
+                    MyInfo<object>.GetInstance.CurrPmObj = emp;     //保存当前对象
 
-                    // MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title);   //显示当前对象
+                    // MessageBox.Show(MyInfo<object>.GetInstance.CurrPmObj.title);   //显示当前对象
 
                     //屏蔽事件
                     if (e.ChangedButton == MouseButton.Right)   //如果是点击右键
                     {
                         plw.BContMenu.IsOpen = true;            //显示右键菜单
                     }
-                    //MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title.ToString());
+                    //MessageBox.Show(MyInfo<object>.GetInstance.CurrPmObj.title.ToString());
                 };
                 lv.Dispatcher.BeginInvoke(action1);
 
@@ -513,7 +506,7 @@ namespace WpfPro.Controls
             ProductsListWin plw = targetWindow as ProductsListWin;		//窗体类型转换
 
             GenFaMoel gfm = lv.SelectedItem as GenFaMoel;   //获取选中对象
-            MyInfo.GetInstance.CurrGfObj = gfm;     //保存当前对象
+            MyInfo<object>.GetInstance.CurrGfObj = gfm;     //保存当前对象
 
 
             //屏蔽事件
@@ -522,36 +515,31 @@ namespace WpfPro.Controls
                 plw.QContMenu.IsOpen = true;            //显示右键菜单
             }
             //MessageBox.Show(ProductsListWin.sync.ToString());
-            //MessageBox.Show(MyInfo.GetInstance.CurrPmObj.title.ToString());
+            //MessageBox.Show(MyInfo<object>.GetInstance.CurrPmObj.title.ToString());
         }
 
 
         
 
         //转链后的界面的功能
-        //public static void TurnToCopyLogic(ListView sender, ProdListModel obj, TurnDataModel tdm)
+        //public static void TurnToCopyLogic(ListView sender, ProdListModel obj, TurnListModel tdm)
         public static void TurnToCopyLogic(params object[] parm)
         {
            // ProdListModel plm = obj;     //商品列表点击的对象
-            ProdListModel plm = parm[0] as ProdListModel;     //商品列表点击的对象,数据一般都在这里
-            TurnDataModel tdo = parm[1] as TurnDataModel;     //转链后的对象
+            TurnListModel tdo = parm[0] as TurnListModel;     //转链后的对象
 
-            tdo.title = (string)plm.title;  //标题
-            tdo.createTime = (string)plm.createTime;    
 
             TurnTolinkWin ttw = new TurnTolinkWin();//初始化窗口
 
-            ttw.Timage.Source = new BitmapImage(new Uri(plm.pictUrl));    //加载图片
+            ttw.Timage.Source = new BitmapImage(new Uri(tdo.pictUrl));    //加载图片
 
             //获取默认模版内容
            // string TempCont = GetOrSetTools<ProductsListWin>.GetDefTemp(sender).Trim();
             string TempCont = GetOrSetTools<ProductsListWin>.GetDefTemp().Trim();
 
             //处理转链后的数据(替换占位符) , 第一个为替换的模版内容 ,  参数2替换的对象
-           // TempCont = GetOrSetTools<ProductsListWin>.GetAssocaObj(TempCont, tdm);
-            TempCont = GetOrSetTools<ProductsListWin>.GetAssocaObj(TempCont, (TurnDataModel)parm[1]);
-            //重载方法,在遍历ProdListModel对象
-            TempCont = GetOrSetTools<ProductsListWin>.GetAssocaObj(TempCont, plm);
+            TempCont = GetOrSetTools<TurnListModel>.GetAssocaObj(TempCont, tdo);
+
 
             //显示信息到转链的面板上
             ShowTools.ShowTextBox(ttw.TtextBox, TempCont);
@@ -624,7 +612,7 @@ namespace WpfPro.Controls
             //写入内容,指定默认模版 1
             IOTools.WriteFile(DfiFilePath, DefineId);
             //保存默认模板信息到我的数据里
-            MyInfo.GetInstance.MYTEMPLATE = IOTools.ReadFile(DfiFilePath); 
+            MyInfo<object>.GetInstance.MYTEMPLATE = IOTools.ReadFile(DfiFilePath); 
 
         }
 
@@ -688,7 +676,7 @@ namespace WpfPro.Controls
             {
                 //调用抽象接口 
                 AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao, ShowGoodsListSuccLogic,
-                    TexStr, "1011", "1", "2", "15", MyInfo.GetInstance.UID);
+                    TexStr, "1011", "1", "2", "15", MyInfo<object>.GetInstance.UID);
             }
 
         }
@@ -699,32 +687,39 @@ namespace WpfPro.Controls
         {
                 //调用抽象接口 
              AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao, ShowGoodsListSuccLogic,
-                    "", "1011", "1", "2", "15", MyInfo.GetInstance.UID);
+                    "", "1011", "1", "2", "15", MyInfo<object>.GetInstance.UID);
         }
 
       
         //商品列表显示
         public static void ShowGoodsListSuccLogic(MLoginJson<ProdDataModel> model)
         {
-            MyInfo.GetInstance.GoodsFlg = false;
+            MyInfo<object>.GetInstance.GoodsFlg = false;
             ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");  //获取窗口
 
 
-            List<ProdListModel> viewList = model.data.list; //获取显示的数据
+            List<TurnListModel> viewList = model.data.list; //获取显示的数据(数据存于基类)
 
             for (int i = 0; i < viewList.Count; i++)
             {
                 viewList[i].BianHao = i + 1;
             }
 
-            pw.PlistView.ItemsSource = null;
-            pw.PlistView.ItemsSource = viewList;       //显示到ListView
+            if (pw.PlistView.ItemsSource ==null)
+            {
+                pw.PlistView.ItemsSource = viewList;       //显示到ListView
+            }
+            else
+            {
+                pw.PlistView.Items.Refresh();   //刷新
+            }
+ 
 
-            MyInfo.GetInstance.GoodsFlg = true;
+            MyInfo<object>.GetInstance.GoodsFlg = true;
 
         }
 
-        //微信列表显示
+        //微信群添加功能
         public static void AddWeChatLogic(object obj)
         {
                 Button but = obj as Button;
@@ -732,18 +727,25 @@ namespace WpfPro.Controls
             Action action1 = () =>      //匿名方法
             {
                 Window targetWindow = Window.GetWindow(but); //通过控件找窗体
-                ProductsListWin pw = targetWindow as ProductsListWin;		//类型转换
-                string WCName = pw.MATextBox.Text;  //获取微信名称
+                ProductsListWin pw = targetWindow as ProductsListWin;		//窗口类型转换
+                string WCName = pw.MATextBox.Text;  //获取输入框里输入的微信群名称
+
+                if (WCName =="" || WCName==null)
+                {
+                    MessageBox.Show("没有群名称");
+                    return;
+                }
 
                 new WeChatModel(WCName);    //创建对象时关联
-                List<WeChatModel> wl = MyInfo.GetInstance.WeChatList;   //微信群
+                List<WeChatModel> wl = MyInfo<object>.GetInstance.WeChatList;   //微信群
                 string enstr = SerializationTools<List<WeChatModel>>.EnpJsonObj(wl);
 
                 string TextFile = PathTools.LocalDataWeChatFile; //获取文件路径
                 IOTools.WriteFile(TextFile, enstr); //在本地写入内容
 
-                pw.WClistView.ItemsSource = null;
-                 pw.WClistView.ItemsSource = MyInfo.GetInstance.WeChatList; //显示
+                //因为前面已经加载了,所以这里只要刷新就可以
+                pw.WClistView.Items.Refresh(); //刷新数据
+
              };
              but.Dispatcher.BeginInvoke(action1);
             // MessageBox.Show("添加微信群");
@@ -756,18 +758,26 @@ namespace WpfPro.Controls
             Button but = obj as Button;
             //ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm");
 
-            List<WeChatModel> lst = MyInfo.GetInstance.WeChatList;
+            List<WeChatModel> lst = MyInfo<object>.GetInstance.WeChatList;  //微信群列表
+            List<GenFaMoel> gfl = MyInfo<object>.GetInstance.GenfaList;   //跟发列表
+
+            string piurl = gfl[0].pictUrl; //图片地址,存到基类属性上面
+            //BitmapImage Bmg = new BitmapImage(new Uri(gfl[0].pictUrl));    //加载图片
+            //获取默认模版内容
+            string TempCont = GetOrSetTools<ProductsListWin>.GetDefTemp().Trim();
+            //匹配模板(替换占位符) , 第一个为替换的模版内容 ,  参数2替换的对象
+            TempCont = GetOrSetTools<GenFaMoel>.GetAssocaObj(TempCont, gfl[0]);
 
 
-            string ConStr = "囧囧囧囧囧囧囧囧";
-            int NumOf = 5;
+         //   string ss = new WeChatInf().add_material();   
+
+
+            int NumOf = 2;
             int time = 50;
-
-            ParmObj poj = new ParmObj(5);
-            poj.ParmArray[0] = but;
-            poj.ParmArray[1] = ConStr;
-            poj.ParmArray[2] = NumOf;
-            poj.ParmArray[3] = time;
+            List<object> ParmList = new List<object>();
+            ParmList.Add(but);
+            ParmList.Add(NumOf);
+            ParmList.Add(time);
 
             string HwndStr = string.Empty;
 
@@ -785,22 +795,40 @@ namespace WpfPro.Controls
                 else
                 {
                     // MessageBox.Show(HwndStr); //句柄显示
-                    poj.ParmArray[4] = HwndStr;
-                    ThreadCls<object>.ThreadPoolFun(WinHandle.WinSendMsg, poj); //开启线程池
+                   // poj.ParmArray[3] = HwndStr;
+                    ParmList.Add(HwndStr);
+                    ParmList.Add(TempCont);
+                    ParmList.Add(piurl);
+
+                    ParmObj poj = new ParmObj();
+                    poj.ParmArray = ParmList.ToArray();
+                    ThreadCls<object>.ThreadPoolFun(WinHandle.WeChatMainWinMsgSend, poj); //开启线程池
                 }
 
             }
 
         }
 
+        //微信群删除逻辑
+        public static void DelWechatLogic(object obj)
+        {
+            Button but = obj as Button;
+
+            Action action1 = () =>      //匿名方法
+            {
+                //获取当前控件绑定的参数
+                int id = Convert.ToInt32(but.CommandParameter);
+                MyInfo<WeChatModel>.LocalDelWeChatData(id); //删除微信群逻辑
+            };
+            but.Dispatcher.BeginInvoke(action1);
+        }
+        
 
 
 
 
 
-
-
-        #region 右键子项功能
+ #region 右键子项功能
 
 
 
@@ -819,25 +847,23 @@ namespace WpfPro.Controls
             //params object[] parm
 
         }
-
+        //添加到跟发
         public static void GenFaLogic(object[] obj)
         {
 
             //获取窗口
             ProductsListWin pw = ManWinCls<ProductsListWin>.GetWin("ProdWinForm"); ;      
-            //ProdListModel emp = MyInfo.GetInstance.CurrPmObj;   //获取选中对象
-            ProdListModel emp = obj[0] as ProdListModel;   //获取选中对象
-            TurnDataModel tdo = obj[1] as TurnDataModel;
-
-            tdo.title = (string)emp.title;  //标题, 大部分数据都可以从emp获取
-            tdo.createTime = (string)emp.createTime;
+            //ProdListModel emp = MyInfo<object>.GetInstance.CurrPmObj;   //获取选中对象
+           // ProdListModel emp = obj[0] as ProdListModel;   //获取选中对象
+            TurnListModel tdo = obj[0] as TurnListModel;
 
             //构造函数自动关联对象,存储全部跟发信息
-            new GenFaMoel(tdo);
+
+             new GenFaMoel(tdo);
 
             // MessageBox.Show( tdo.title);
 
-            List<GenFaMoel> gf = MyInfo.GetInstance.GenfaList;  //跟发群
+            List<GenFaMoel> gf = MyInfo<object>.GetInstance.GenfaList;  //跟发群
             string enstr = SerializationTools<List<GenFaMoel>>.EnpJsonObj(gf);  //序列化
 
             string TextFile = PathTools.LocalDataGenFaFile; //获取跟发文件路径
@@ -846,7 +872,7 @@ namespace WpfPro.Controls
 
             //显示到listview里
             pw.AddListView.ItemsSource = null;      //先清空
-            pw.AddListView.ItemsSource = MyInfo.GetInstance.GenfaList;
+            pw.AddListView.ItemsSource = MyInfo<object>.GetInstance.GenfaList;
 
         }
 

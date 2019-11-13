@@ -12,7 +12,7 @@ namespace WpfPro.Local.LocalModel
     class WeChatModel
     {
        
-        int WXID = MyInfo.GetInstance.WeChatList.Count+1;
+        int WXID = MyInfo<object>.GetInstance.WeChatList.Count+1;
         [DataMember]
         public int id { get; set; } = 0;
         [DataMember]
@@ -25,7 +25,7 @@ namespace WpfPro.Local.LocalModel
 
             this.id = WXID;
             this.QunMingCheng = QUNMINGCHENG;
-            MyInfo.GetInstance.WeChatList.Add(this);     //自动关联对象
+            MyInfo<object>.GetInstance.WeChatList.Add(this);     //自动关联对象
         }
     }
 }

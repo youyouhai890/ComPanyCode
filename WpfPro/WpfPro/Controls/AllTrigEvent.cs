@@ -178,6 +178,14 @@ namespace WpfPro.Controls
                     //启动线程
                     ThreadCls<T>.ThreadFunStart(ButtLogic<T>.SendLinkImgLogic, CurrObj);
                 }
+                else if (CurrObj.Name.Trim() == "WCButton") //微信群删除功能
+                {
+                    //启动线程
+                    ThreadCls<T>.ThreadFunStart(ButtLogic<T>.DelWechatLogic, CurrObj);
+                }
+
+
+                
                 
                 else
                 {
@@ -322,7 +330,7 @@ namespace WpfPro.Controls
                     //读取模版的处理逻辑
                     ThreadCls<T>.ThreadFunStart(WinLoadedLogic<T>.ReadTemplLogic, sender);
                    // WinLoadedLogic<T>.ReadTemplLogic(sender);
-                    //获取本地数据列表的逻辑
+                    //获取本地数据列表的逻辑 , 微信和跟发列表
                     ThreadCls<T>.ThreadFunStart(WinLoadedLogic<T>.LoadLocDataLogic, sender);
 
                 }
@@ -366,7 +374,7 @@ namespace WpfPro.Controls
                 }
                 else if (win.Name == "LoginInputWinForm")   //注册窗口
                 {
-                    ManWinCls<LoginInputWin>.CloseWin(win, e);
+                  new  ManWinCls<LoginInputWin>().WinClose(sender, e);
                     return;
                 }
 

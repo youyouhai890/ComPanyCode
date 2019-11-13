@@ -146,6 +146,9 @@
     <Compile Include="Forms\Products\ProductsListWin.xaml.cs">
       <DependentUpon>ProductsListWin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TestForm\TestWin.xaml.cs">
+      <DependentUpon>TestWin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HttpJsons\AbsInterfaces.cs" />
     <Compile Include="HttpJsons\JsonModel\ProdDataModel.cs" />
     <Compile Include="HttpJsons\JsonModel\ProdListModel.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="HttpJsons\AllInterfaceCls.cs" />
     <Compile Include="HttpJsons\AccJsonObj\MLoginJson.cs" />
     <Compile Include="HttpJsons\SerializationTools.cs" />
+    <Compile Include="HttpJsons\WeChat\WeChatInf.cs" />
     <Compile Include="Local\LocalModel\GenFaMoel.cs" />
     <Compile Include="Local\LocalModel\WeChatModel.cs" />
     <Compile Include="ManageAllCls\ManaEnumCls.cs" />
@@ -162,12 +166,14 @@
     <Compile Include="ManageAllCls\ObserverCls.cs" />
     <Compile Include="ManageAllCls\ParmObj.cs" />
     <Compile Include="ManageAllCls\ThreadCls.cs" />
+    <Compile Include="TestCode\Test2.cs" />
     <Compile Include="TestCode\TestCls.cs" />
     <Compile Include="ToolsCls\GetOrSetTools.cs" />
     <Compile Include="ToolsCls\IOTools.cs" />
     <Compile Include="ToolsCls\PathTools.cs" />
     <Compile Include="ToolsCls\RegularTools.cs" />
     <Compile Include="ToolsCls\ShowTools.cs" />
+    <Compile Include="ToolsCls\StringReplaceCls.cs" />
     <Compile Include="ToolsCls\WinHandle.cs" />
     <Compile Include="UI\DrawForm.cs" />
     <Compile Include="App.xaml.cs">
@@ -286,6 +292,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\TestForm\TestWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -298,9 +308,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -31,7 +31,7 @@ namespace WpfPro.Forms.LoginDir
             ManWinCls<LoginInputWin>.AddWin(this.Name, this);   //添加管理的窗口
 
             //关闭当前窗口,在属性窗口那里貌似找不到这事件，但是可以手动注册
-           // this.Closing += new ManWinCls<LoginInputWin>().WinClose;
+            this.Closing += new ManWinCls<LoginInputWin>().WinClose;
 
         }
 
@@ -77,10 +77,14 @@ namespace WpfPro.Forms.LoginDir
 
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            AllTrigEvent<ForgetWin>.WinCloseEve(this, e);
-        }
+        //protected override void OnClosing(object sender,CancelEventArgs e)
+        //{
+        //    AllTrigEvent<LoginInputWin>.WinCloseEve(this, e);
+        //}
 
+        private void LoginInputWinForm_Closing(object sender, CancelEventArgs e)
+        {
+            AllTrigEvent<LoginInputWin>.WinCloseEve(this, e);
+        }
     }
 }

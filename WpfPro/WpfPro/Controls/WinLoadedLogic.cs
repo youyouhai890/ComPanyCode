@@ -22,12 +22,12 @@ namespace WpfPro.Controls
                 ProductsListWin Wind = (ProductsListWin)win;
                 Action action1 = () =>      //匿名方法
                 {
-                    string uid = MyInfo.GetInstance.UID;   //获取登陆后的UID
+                    string uid = MyInfo<object>.GetInstance.UID;   //获取登陆后的UID
 
                     //接口,方法,参数
                     AbsInterfaces<ProdDataModel>.AppInfFun(HttpInterf.ShangPinLieBiao,
                         ButtLogic<ProductsListWin>.ShowGoodsListSuccLogic ,
-                    "", "1011", "1", "1", "15", MyInfo.GetInstance.UID);
+                    "", "1011", "1", "1", "15", MyInfo<object>.GetInstance.UID);
 
 
                 };
@@ -50,8 +50,8 @@ namespace WpfPro.Controls
                 Action action1 = () =>      //匿名方法
                 {
                     //获取本地数据
-                    Wind.AddListView.ItemsSource = MyInfo.GetInstance.GenfaList;  //跟发列表显示
-                    Wind.WClistView.ItemsSource = MyInfo.GetInstance.WeChatList;  //微信群列表显示
+                    Wind.AddListView.ItemsSource = MyInfo<object>.GetInstance.GenfaList;  //跟发列表显示
+                    Wind.WClistView.ItemsSource = MyInfo<object>.GetInstance.WeChatList;  //微信群列表显示
 
                 };
                 Wind.Dispatcher.BeginInvoke(action1);

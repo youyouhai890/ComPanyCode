@@ -49,7 +49,11 @@ namespace WpfPro.HttpJsons
                 else if (model.code == 500) //设置PID
                 {
                     MessageBox.Show(model.message);
-                    
+
+                }
+                else if(model.code == 5000)
+                {
+                    MessageBox.Show(model.message);
                 }
                 else
                 {

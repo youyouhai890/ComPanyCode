@@ -195,5 +195,12 @@ namespace WpfPro.Forms.Products
             AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
 
         }
+
+        //微信群删除按钮
+        private void WCButton_Click(object sender, RoutedEventArgs e)
+        {
+            AllTrigEvent<ProductsListWin>.ButtAllClickEve(sender);
+
+        }
     }
 }

@@ -66,7 +66,7 @@
                     <Button x:Name="LButton1" Content="刷新" Margin="903,52,47,0" VerticalAlignment="Top" Height="35" Background="#FFFF9800" Foreground="White" Click="LButton1_Click" Grid.Column="1"/>
                 </Grid>
             </TabItem>
-            <TabItem  Header="群发助手" Name="QunFa" Margin="-2,2,2,-2" Height="40">
+            <TabItem  Header="群发助手" Name="QunFa" Margin="-2,0,2,0" Height="40">
                 <Grid Background="White">
                     <Canvas>
                         <Label x:Name="QLabel1" Content="群发助手" Canvas.Left="23" Canvas.Top="10" Height="28" Width="76"/>
@@ -86,8 +86,8 @@
                                     <StackPanel Margin="0,0,0,0">
                                         <Label Height="2" Margin="-10,0,-10,0" Background="#FFBBBBBB"/>
                                         <DockPanel  LastChildFill="False" Margin="0,10,0,0">
-                                            <CheckBox x:Name="MACheckBox" Content="立即发送" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-8,-10,0,0" Width="83"/>
-                                            <CheckBox x:Name="MACheckBox2" Content="发送时间段" Margin="20,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-5,-10,0,0" Width="100"/>
+                                            <RadioButton x:Name="MARadioButtonx" Content="立即发送" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-8,-10,0,0" Width="83"/>
+                                            <RadioButton x:Name="MARadioButton5" Content="发送时间段" Margin="20,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-5,-10,0,0" Width="100"/>
                                             <TextBox x:Name="MATextBox1" Height="23" TextWrapping="Wrap" Text="TextBox" Width="95"/>
                                             <Label x:Name="MALabel" Content="间隔事件" Margin="70,-5,0,0" Height="28" HorizontalContentAlignment="Stretch" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="0,0,0,3" Width="68"/>
                                             <TextBox x:Name="MATextBox2" Text="60" Margin="0,0,0,0" Width="30" FontSize="15" Height="25" HorizontalContentAlignment="Center"/>
@@ -98,8 +98,8 @@
                                     </StackPanel>
                                     <StackPanel Margin="0,5,0,0">
                                         <DockPanel  LastChildFill="False" Margin="0,10,0,0">
-                                            <CheckBox x:Name="MACheckBox4" Content="只跟发天猫" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-8,-10,0,0" Width="103"/>
-                                            <CheckBox x:Name="MACheckBox5" Content="没有链接不跟发" Margin="0,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-5,-10,0,0" Width="130" />
+                                            <RadioButton x:Name="MARadioButton6" Content="只跟发天猫" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-8,-10,0,0" Width="103"/>
+                                            <RadioButton x:Name="MARadioButton7" Content="没有链接不跟发" Margin="0,5,0,0" Height="28" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="-5,-10,0,0" Width="130" />
                                             <Label x:Name="MALabel4" Content="佣金低于" Margin="5,-5,0,0" Height="28" HorizontalContentAlignment="Stretch" RenderTransformOrigin="-1.205,-0.087" FontSize="15" VerticalContentAlignment="Center" BorderThickness="1,4,1,1" Padding="0,0,0,3" Width="59"/>
                                             <TextBox x:Name="MATextBox7" Text="10" Margin="5,0,0,0" Width="37" FontSize="15" Height="25" HorizontalContentAlignment="Center"/>
                                             <Label x:Name="MALabel5" Content="%不发" Margin="0,0,0,0" FontSize="15" Padding="5,5,0,5" Width="47"/>
@@ -121,8 +121,8 @@
                                                         <MenuItem Header="发送选择内容" Name="FaSongNeiRong" Click="FaSongNeiRong_Click"/>
                                                     </ContextMenu>
                                                 </GridView.ColumnHeaderContextMenu>
-                                                <GridViewColumn Header="#"       Width="50" DisplayMemberBinding="{Binding id}"/>
-                                                <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding time}"/>
+                                                <GridViewColumn Header="#"       Width="50" DisplayMemberBinding="{Binding gid}"/>
+                                                <GridViewColumn Header="时间" Width="150" DisplayMemberBinding="{Binding createTime}"/>
                                                 <GridViewColumn Header="内容" Width="300"  >
                                                     <GridViewColumn.HeaderContainerStyle>
                                                         <Style TargetType="GridViewColumnHeader" >
@@ -168,7 +168,7 @@
                                                 <GridViewColumn Header="操作" Width="140">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <Button Content="删除"  Width="75" Height="23" />
+                                                            <Button Name="WCButton" Content="删除"  Width="75" Height="23" CommandParameter="{Binding Path=id}" Click="WCButton_Click"  />
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -212,7 +212,7 @@
                     <Label x:Name="Plabe6" Content="2019年05月15日 14: 42: 13" Margin="0,0,0,56" Background="White" VerticalAlignment="Bottom" FontSize="13" Height="45"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="推广位位置"  Margin="-2,2,2,-2" Height="40">
+            <TabItem Header="推广位位置"  Margin="-2,0,2,0" Height="40">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                         <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -245,7 +245,7 @@
                     <Button x:Name="Sbutton2" Height="25" Width="80" Margin="90,35,100,0" Content="授权" Background="#FFFF9800" Foreground="White" Click="Sbutton2_Click" Focusable="False"/>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="模版设置" x:Name="TabItem2" Height="40" Margin="-2,0,2,-2" VerticalAlignment="Bottom">
+            <TabItem Header="模版设置" x:Name="TabItem2" Margin="-2,0,2,-20">
                 <Canvas>
                     <StackPanel Margin="0,-0,-670,0" Height="60">
                         <Label x:Name="Plabel5" Margin="20,10,0,0" Content="软件设置" FontSize="14"/>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -88,28 +89,13 @@ namespace WpfPro.ManageAllCls
             return win;
         }
 
-        //关闭窗口时触发的函数
-        public void WinClose(object o, System.ComponentModel.CancelEventArgs e)
-        {
-            //  Window obj = (Window)o;
-            // System.Environment.Exit(0);
 
-                Application.Current.Shutdown();
-      
-           // Application.Current.Shutdown();
-        }
 
-        public static void HideWin(T obj)
+        public static void HideWin(string winName)
         {
-            T win = obj as T;
-            //if (win.Visibility == Visibility.Visible)
-            //{
-                win.Visibility = Visibility.Hidden; //隐藏
-            //}
-            //else
-            //{
-            //    win.Hide();         //隐藏窗口
-            //}
+            T win = ManWinCls<T>.GetWin(winName);
+           // T win = obj as T;
+            win.Hide();
         }
 
         //关闭窗口,实际是重写方法隐藏窗口
@@ -149,21 +135,11 @@ namespace WpfPro.ManageAllCls
         public static void ShowWin(T obj)
         {
             T win = obj as T;
-            //if (win.Visibility==Visibility.Hidden)
-            //{
-            //    win.Visibility = Visibility.Visible;    //显示
-            //    win.Topmost = true;         //窗口显示到最前
-            //    win.WindowStartupLocation = WindowStartupLocation.CenterScreen; //显示到屏幕中间
-            //}
-            //else
-           // {
+
                 win.Visibility = Visibility.Visible;    //显示
                 win.Topmost = true;         //窗口显示到最前
                 win.WindowStartupLocation = WindowStartupLocation.CenterScreen; //显示到屏幕中间
-                //win.Show();         //显示窗口
-                //win.Topmost = true;         //窗口显示到最前
-                //win.WindowStartupLocation = WindowStartupLocation.CenterScreen; //显示到屏幕中间
-           // }
+
 
         }
 
@@ -176,10 +152,19 @@ namespace WpfPro.ManageAllCls
             app.Run(win);
         }
 
+        //关闭窗口时触发的函数
+        public void WinClose(object o, CancelEventArgs e)
+        {
+           // MessageBox.Show("直接关闭......");
+            Application.Current.Shutdown();
+            //Environment.Exit(0);//退出全部线程,关闭整个进程  
+            //Process pos =  Process.GetCurrentProcess();
+            //pos.Kill();
 
+        }
 
         //火狐内核启动
-       public  static  GeckoWebBrowser geckoWebBrowser;
+        public  static  GeckoWebBrowser geckoWebBrowser;
         public static void FixWebPage(object obj)
         {
             string URL = obj as string;

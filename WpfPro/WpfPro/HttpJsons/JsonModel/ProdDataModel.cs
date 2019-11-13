@@ -17,7 +17,7 @@ namespace WpfPro.HttpJsons.JsonModel
         public pageInfo pageInfo { get; set; }
 
         [DataMember]
-        public List<ProdListModel> list { get; set; }
+        public List<TurnListModel> list { get; set; }
     }
 
     [DataContract]
