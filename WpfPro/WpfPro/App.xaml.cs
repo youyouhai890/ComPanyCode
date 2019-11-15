@@ -23,31 +23,32 @@ namespace WpfPro
     {
 
         //用于托盘,启动时
-       // private TaskbarIcon _KeyIco;
-       //主函数入口
+        // private TaskbarIcon _KeyIco;
+        //主函数入口
+        [STAThread]  //应该是单线程单元
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             //托盘显示
          //   _KeyIco = (TaskbarIcon)FindResource("KeyIco");
-          EnvirInit();   //启动环境
 
             Process instance = RunningInstance();
             if (instance == null)   //检测是否为第一次启动
             {
                 try
                 {
+                    //启动环境
+                    ThreadCls<object>.ThreadFunStart(EnvirInit);
+                    //EnvirInit();   //启动环境
 
-                    // Application app = new Application();        //创建application对象
-                    LoginInputWin LogInp = new LoginInputWin();        //作为主窗口启动
+
+                    LoginInputWin LogInp = new LoginInputWin();      //初始化窗口
                     LogInp.Title = "Login";
-                    //窗口标题
-                    ManWinCls<LoginInputWin>.ShowDialogWin(LogInp);
-                    //ManWinCls<LoginInputWin>.ShowWin(LogInp);
+                    ManWinCls<LoginInputWin>.ShowWin(LogInp); //模态启动
 
 
                     //用于测试
                     //TestWin tw = new TestWin();
-                    //ManWinCls<TestWin>.ShowDialogWin(tw);
+                    //ManWinCls<TestWin>.ShowWin(tw);
 
                 }
                 catch (Exception ex)
@@ -124,7 +125,7 @@ namespace WpfPro
         public static Process RunningInstance()
             {
                 //GetCurrentProcess创建新的Process类实例并将其当前活动的进程资源关联            
-                Process current = Process.GetCurrentProcess();  //
+                Process current = Process.GetCurrentProcess();  //获取当前运行的实例(窗口)
                                                                 //创建新的 Process 组件的数组，并将它们与本地计算机上共享指定的进程名称的所有进程资源关联。
                 Process[] processes = Process.GetProcessesByName(current.ProcessName);
                 foreach (Process process in processes)

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using WpfPro.Forms.Products;
 using WpfPro.ManageAllCls;
 
 namespace WpfPro.ToolsCls
@@ -21,56 +22,46 @@ namespace WpfPro.ToolsCls
     {
         private static readonly object WHlockSync = new object();
 
-        #region 窗口句柄
+ #region Windows API
         ////声明 API 函数
-        //[DllImport("User32.dll", EntryPoint = "SendMessage")]
-        //private static extern IntPtr SendMessage(int hWnd, int msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("User32.dll", EntryPoint = "SendMessage")]
+        public static extern IntPtr SendMessage(int hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
 
-        //[DllImport("User32.dll", EntryPoint = "FindWindow")]
-        ////其中第一个参数为该窗体的类名，其实一般来说都设置为null
-        ////第二个参数为窗体的标题名(一般第二个参数经常使用)
-        //private static extern int FindWindow(string lpClassName, string lpWindowName);
+        //其中第一个参数为该窗体的类名，其实一般来说都设置为null
+        //第二个参数为窗体的标题名(一般第二个参数经常使用)
+        [DllImport("User32.dll", EntryPoint = "FindWindow")]
+        public static extern int FindWindow(string lpClassName, string lpWindowName);
 
-        ////定义消息常数
+        //定义消息常数
         //public const int CUSTOM_MESSAGE = 0X400 + 2;//自定义消息
 
+        //   2、对窗口进行最小化
+        [DllImport("user32.dll", EntryPoint = "ShowWindow")]
+        public static extern IntPtr ShowWindow(IntPtr hWnd, int _value);
+        //WinHandle.ShowWindow(handle, 2);  //最小化
 
-        ////向窗体发送消息的函数
-        //public void SendMsgToMainForm(int MSG)
-        //{
-        //    int WINDOW_HANDLER = FindWindow(null, "A_엄마");
-        //    if (WINDOW_HANDLER == 0)
-        //    {
-        //        throw new Exception("Could not find Main window!");
-        //    }
-
-        //    long result = SendMessage(WINDOW_HANDLER, CUSTOM_MESSAGE, new IntPtr(14), IntPtr.Zero).ToInt64();
-
-        //}
-
-
-        ////获取窗口句柄
-        //public static void GetHandle(string Str)
-        //{
-        //    string Content = Str;
-
-        //    IntPtr ParenthWnd = new IntPtr(0);
-        //    ParenthWnd = (IntPtr)FindWindow(null, Content);
-        //    //判断这个窗体是否有效
-        //    if (ParenthWnd != IntPtr.Zero)
-        //    {
-        //        MessageBox.Show(ParenthWnd.ToString());
-        //    }
-        //    else
-        //        MessageBox.Show("没有找到窗口");
-
-        //}
-
-        #endregion
+        //窗口大小模版
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left; //最左坐标
+            public int Top; //最上坐标
+            public int Right; //最右坐标
+            public int Bottom; //最下坐标
+        }
 
 
-        #region  遍历所有窗口(获取所有窗口)     
+        [DllImport("user32.dll")]
+        //获取窗口大小
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+        //配合RECT结构体一起用
+
+        //窗口设置(包含置顶)
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        //配合RECT结构体一起用
 
 
         //1.首先需要声明一个委托函数用于 Win32 API - EnumWindows 的回调函数：
@@ -81,23 +72,31 @@ namespace WpfPro.ToolsCls
         //EnumWindows(delegate(IntPtr hWnd, int lParam) {……},0);
 
         //1.首先需要声明一个委托函数用于 Win32 API - EnumWindows 的回调函数：
-        private delegate bool WNDENUMPROC(IntPtr hWnd, int lParam); //IntPtr hWnd用int也可以
+        public delegate bool WNDENUMPROC(IntPtr hWnd, int lParam); //IntPtr hWnd用int也可以
         //用来遍历所有窗口 
         [DllImport("user32.dll")]
-        private static extern bool EnumWindows(WNDENUMPROC lpEnumFunc, int lParam);
+        public static extern bool EnumWindows(WNDENUMPROC lpEnumFunc, int lParam);
 
         //获取窗口Text 
         [DllImport("user32.dll")]
-        private static extern int GetWindowTextW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
+        public static extern int GetWindowTextW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
+        //GetWindowTextW(hWnd, StringBuilder, StringBuilder.Capacity);      //实例
 
         //获取窗口类名 
         [DllImport("user32.dll")]
-        private static extern int GetClassNameW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
+        public static extern int GetClassNameW(IntPtr hWnd, [MarshalAs(UnmanagedType.LPWStr)]StringBuilder lpString, int nMaxCount);
 
         //获取窗口焦点,激活窗口
         [DllImport("User32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd); 
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        //SetForegroundWindow(win);       //实例
 
+
+ #endregion
+
+
+
+ #region  遍历所有窗口(获取所有窗口)     
 
         //自定义一个类，用来保存句柄信息，在遍历的时候，随便也用空上句柄来获取些信息，呵呵 
         public struct WindowInfo
@@ -122,22 +121,14 @@ namespace WpfPro.ToolsCls
                 if (di.Value.ToString() == WinName)
                 {
                     hwndName = di.Key.ToString();
-                    //MessageBox.Show((string)WinHwnd[va]);
-                    //MessageBox.Show(di.Key.ToString());
                     break;
                 }
             }
-
-            //if (hwndName == "" || hwndName == null)
-            //{
-            //    MessageBox.Show("没有获取到匹配的窗口...");
-            //}
 
             return hwndName;
         }
 
         //获取所有窗口句柄
-        //public static List<WindowInfo> GetAllDesktopWindows()
         public static IDictionary<IntPtr, string> GetAllDesktopWindows()
         {
             //用来保存窗口对象 列表
@@ -179,78 +170,79 @@ namespace WpfPro.ToolsCls
 
 
 
-
-        #region 往微信默认打开的主窗口发送消息
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindow(String ClassName, String WindwosName);  //用于查找窗口
-
-
-       
-        //public static void WeChatMainWinMsgSend(string Content,string WinName)
-        public static void WeChatMainWinMsgSend(object parm)
-        {
-            lock (WHlockSync)
-            {
-                ParmObj poj = parm as ParmObj;
-                Button but = poj.ParmArray[0] as Button;
-                int NumOf = (int)poj.ParmArray[1];
-                int time = (int)poj.ParmArray[2];
-                string HwndStr = poj.ParmArray[3] as string;
-                string ContTxt = poj.ParmArray[4] as string;
-                string pic = poj.ParmArray[5] as string;
-
-                IntPtr win  = GetStringToIntptr(HwndStr);
-                Action action1 = () =>      //匿名方法
-                {
-
-                    //当前线程间隔时间,已经是在线程里面
-                    for (int i = 0; i < NumOf; i++)
-                    {
-                        Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                        //字符串转换成句柄
-                        SetForegroundWindow(win);       //激活窗口,获取焦点
-
-                        Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                        System.Windows.Forms.SendKeys.SendWait(ContTxt.ToString().Trim());//发送内容
-                        Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                        System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-
-                        Thread.Sleep(TimeSpan.FromMilliseconds(500));
-                        System.Windows.Forms.SendKeys.SendWait(pic);//发送内容
-                        Thread.Sleep(TimeSpan.FromMilliseconds(300));
-                        System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-
-                    }
-
-                };
-                but.Dispatcher.BeginInvoke(action1);
-            }
-   
-
-        }
-
-
-
-
- #endregion
-
-         //string转换为窗口句柄类型
+ #region 句柄类型操作
+        //string转换为窗口句柄类型
         public static IntPtr GetStringToIntptr(string str)
         {
             //如果直接转换成字符串会有问题,所以先转int类型
             IntPtr inpt = (IntPtr)Convert.ToInt64(str);
             return inpt;
         }
-
+        //句柄转换字符串
         public static string GetIntPtrToString(IntPtr inpt)
         {
             string str = Marshal.PtrToStringAnsi(inpt);
             return str;
         }
 
+        #endregion
 
+#region 窗口设置(获取窗口大小,置顶之类的操作 
 
+        //获取窗口大小
+        public static RECT SetSizeWinOpt(IntPtr win)
+        {
+            //IntPtr win = WinHandle.GetStringToIntptr(Hwnd);   //字符串句柄转换为intptr
+
+            RECT rect = new RECT();
+            WinHandle.GetWindowRect(win, ref rect);//h为窗口句柄
+
+            int width = rect.Right - rect.Left;                        //窗口的宽度
+            int height = rect.Bottom - rect.Top;                   //窗口的高度
+            int x = rect.Left;
+            int y = rect.Top;
+
+            return rect;
+        }
+
+        //窗口置顶和激活操作
+        //public static void SetStickWinOpt(IntPtr win)
+        public static void SetStickWinOpt(object obj)
+        {
+            IntPtr win = (IntPtr)obj;
+            RECT rect = SetSizeWinOpt(win);  //获取窗口大小
+
+            IntPtr ZhiDing = (IntPtr)1;
+            //设置窗口 , 第二个参数为置顶
+            SetWindowPos(win, ZhiDing, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, 1);
+
+            SetForegroundWindow(win);        //激活窗口,移动焦点
+        }
+
+        //窗口最小化
+        public static void SetMixWin(IntPtr Hwnd)
+        {
+            WinHandle.ShowWindow(Hwnd, 2);  //最小化窗口
+        }
+
+        //激活窗口
+        public static bool ActiveWin(object Hwnd)
+        {
+            IntPtr win = (IntPtr)Hwnd;
+
+          return  SetForegroundWindow(win);       
+        }
+
+        //循环激活
+        public static void ActiveWinWhi(object Hwnd)
+        {
+            while (ManageAllStateClscs<object>.GetInstance.ThreadState)
+            {
+                IntPtr win = (IntPtr)Hwnd;
+                SetForegroundWindow(win);        
+            }
+        }
+        #endregion
 
     }
 }

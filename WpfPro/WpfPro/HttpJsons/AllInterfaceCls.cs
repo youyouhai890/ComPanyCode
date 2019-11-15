@@ -39,9 +39,9 @@ namespace WpfPro.HttpJsons
 
 
 
-        public static void InitInfs(string path)
+        public static void InitInfs()
         {
-
+            string path = PathTools.HttpInfPath; //把接口文件拷贝到cofnig里
 
 
             CfgHelper config = new CfgHelper(path); //获取文件信息

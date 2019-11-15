@@ -77,9 +77,6 @@
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.6\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\Microsoft.VisualBasic.dll</HintPath>
@@ -161,13 +158,14 @@
     <Compile Include="Local\LocalModel\GenFaMoel.cs" />
     <Compile Include="Local\LocalModel\WeChatModel.cs" />
     <Compile Include="ManageAllCls\ManaEnumCls.cs" />
+    <Compile Include="ManageAllCls\ManageAllStateClscs.cs" />
     <Compile Include="ManageAllCls\ManWinCls.cs" />
     <Compile Include="ManageAllCls\MyInfo.cs" />
     <Compile Include="ManageAllCls\ObserverCls.cs" />
     <Compile Include="ManageAllCls\ParmObj.cs" />
     <Compile Include="ManageAllCls\ThreadCls.cs" />
-    <Compile Include="TestCode\Test2.cs" />
     <Compile Include="TestCode\TestCls.cs" />
+    <Compile Include="ToolsCls\ClipboardOptCls.cs" />
     <Compile Include="ToolsCls\GetOrSetTools.cs" />
     <Compile Include="ToolsCls\IOTools.cs" />
     <Compile Include="ToolsCls\PathTools.cs" />

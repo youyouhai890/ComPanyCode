@@ -765,12 +765,10 @@ namespace WpfPro.Controls
             //BitmapImage Bmg = new BitmapImage(new Uri(gfl[0].pictUrl));    //加载图片
             //获取默认模版内容
             string TempCont = GetOrSetTools<ProductsListWin>.GetDefTemp().Trim();
-            //匹配模板(替换占位符) , 第一个为替换的模版内容 ,  参数2替换的对象
+            //替换模版里的标志符号, 第一个为替换的模版内容 ,  参数2替换的对象
             TempCont = GetOrSetTools<GenFaMoel>.GetAssocaObj(TempCont, gfl[0]);
 
-
-         //   string ss = new WeChatInf().add_material();   
-
+         // string ss = new WeChatInf().add_material();   
 
             int NumOf = 2;
             int time = 50;
@@ -780,6 +778,7 @@ namespace WpfPro.Controls
             ParmList.Add(time);
 
             string HwndStr = string.Empty;
+
 
 
             for (int i = 0; i < lst.Count; i++)
@@ -794,15 +793,25 @@ namespace WpfPro.Controls
                 }
                 else
                 {
-                    // MessageBox.Show(HwndStr); //句柄显示
+
+                   // MessageBox.Show(HwndStr); //句柄显示
                    // poj.ParmArray[3] = HwndStr;
                     ParmList.Add(HwndStr);
                     ParmList.Add(TempCont);
-                    ParmList.Add(piurl);
+                    //ParmList.Add(piurl);
+                    ParmList.Add(new BitmapImage(new Uri(piurl)));  //保存为图片格式
+
 
                     ParmObj poj = new ParmObj();
                     poj.ParmArray = ParmList.ToArray();
-                    ThreadCls<object>.ThreadPoolFun(WinHandle.WeChatMainWinMsgSend, poj); //开启线程池
+                    //ThreadCls<object>.STAThread(WinHandle.WeChatMainWinMsgSend, poj); //开启线程池
+
+
+                       // ThreadCls<object>.ThreadPoolFun(ClipboardOptCls<object>.ClipboardCoptToPaste, poj);
+                        ThreadCls<object>.ThreadFunStart(ClipboardOptCls<object>.ClipboardCoptToPaste, poj);
+                    //ClipboardOptCls<object>.ClipboardCoptToPaste(HwndStr, ContTxt, img);
+
+
                 }
 
             }

@@ -56,8 +56,7 @@ namespace WpfPro.Configs
         public static void AllEnvirConfInit()
         {
             GetDeFineTempl(); //默认模板
-            HttpInfConfPath = PathTools.HttpInfPath; //把接口文件拷贝到cofnig里
-            AllInterfaceCls.InitInfs(HttpInfConfPath);   //初始化接口
+            AllInterfaceCls.InitInfs();   //初始化接口
 
             //读取本地数据
             CofLocalData();

@@ -103,6 +103,7 @@ D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\LoginDir\LoginInputWin.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\LoginDir\RegWin.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\Products\TurnTolinkWin.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\Products\ProductsListWin.g.cs
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\App.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro_Content.g.cs
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro_MarkupCompile.cache
@@ -114,11 +115,10 @@ D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\LoginDir\LoginInputWin.baml
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\LoginDir\RegWin.baml
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\Products\TurnTolinkWin.baml
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\Products\ProductsListWin.baml
+D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.baml
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.g.resources
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.Properties.Resources.resources
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csproj.GenerateResource.Cache
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.exe
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.pdb
 D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\WpfPro.csprojResolveAssemblyReference.cache
-D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.g.cs
-D:\ComPanyCode\WpfPro\WpfPro\obj\Debug\Forms\TestForm\TestWin.baml

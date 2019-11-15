@@ -157,7 +157,7 @@ namespace WpfPro.ManageAllCls
         {
            // MessageBox.Show("直接关闭......");
             Application.Current.Shutdown();
-            //Environment.Exit(0);//退出全部线程,关闭整个进程  
+            Environment.Exit(0);//退出全部线程,关闭整个进程  
             //Process pos =  Process.GetCurrentProcess();
             //pos.Kill();
 
